@@ -20,9 +20,9 @@ export function useAxiosInterceptor() {
                 dispatch(removeStoreUser())
                 toast.warn("Il semble que votre session a expiré, veuillez vous reconnecter", { autoClose: 5000, toastId: 'unauthorized' })
                 if (window.location.pathname == '/') {
-                    navigate('/signIn')
-                } else if (!window.location.pathname.includes('signIn')) {
-                    navigate('/signIn?redirectUrl=' + window.location.pathname + window.location.search)
+                    navigate('/sign-in')
+                } else if (!window.location.pathname.includes('sign-in')) {
+                    navigate('/sign-in?redirectUrl=' + window.location.pathname + window.location.search)
                 }
             }
             return Promise.reject(error)

@@ -1,0 +1,241 @@
+.header-container {
+    width: 100%;
+    height: 17%;
+    /* position: fixed; */
+    border-bottom: 1px solid rgb(204, 204, 204);
+}
+
+.header-top {
+    padding: 18px;
+    padding-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-logo-container {
+    width: 25%;
+    justify-content: center;
+}
+
+.header-logo {
+    max-height: 80px;
+    max-width: 400px;
+    cursor: pointer;
+    width: fit-content;
+    margin-left: 100px;
+}
+
+.header-search-bar {
+    width: 50%;
+
+}
+
+.header-search-bar-inner {
+    box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+}
+
+.header-right {
+    display: flex;
+    justify-content: center;
+    width: 25%;
+}
+
+.button-create-project {
+    border: 1px solid rgb(202, 202, 202);
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    border-radius: 5px;
+    transition: background-color 0.2s, color 0.2s;
+
+}
+
+.button-create-project:hover {
+    background-color: #4FCD94;
+    color: white;
+}
+
+.button-login {
+    padding: 10px;
+    font-size: 1.2rem;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s;
+    margin-left: 20px;
+}
+
+.button-login:hover {
+    color: #4FCD94;
+}
+
+.header-categories {
+    display: flex;
+    justify-content: center;
+}
+
+.header-category {
+    padding: 15px;
+    font-size: 1.2rem;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.header-category:hover {
+    color: #4FCD94;
+}
+
+.header-container-logo-only {
+    width: 100%;
+    min-height: 12%;
+    border-bottom: 1px solid rgb(204, 204, 204);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-logo-only {
+    max-height: 80px;
+    max-width: 400px;
+    cursor: pointer;
+}
+
+.sub-categories-overlay {
+    z-index: 9;
+    position: absolute;
+    width: 100vw;
+
+    height: 40vh;
+    border-bottom: 1px solid rgb(204, 204, 204);
+    background-color: white;
+    box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.sub-categories-filters {
+    padding-left: 2vw;
+    border-inline: 1px solid rgb(204, 204, 204);
+    max-width: fit-content;
+    padding-right: 70px;
+}
+
+.sub-category,
+.sub-category-filter {
+    cursor: pointer;
+    font-size: 1.2rem;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    transition: color 0.2s;
+    max-width: fit-content;
+    padding-inline: 20px
+}
+
+.sub-category:hover,
+.sub-categories-list-tile:hover,
+.sub-category-filter:hover {
+    color: #4FCD94;
+}
+
+.sub-categories-list-tile {
+    cursor: pointer;
+    font-size: 1.8rem;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    transition: color 0.2s;
+    margin-bottom: 20px;
+}
+
+.sub-categories-other-tile {
+    font-size: 1.2rem;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    color: #656969;
+    margin-bottom: 20px
+}
+
+.sub-categories-columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+}
+
+.sub-category-filter {
+    padding-block: 5px;
+}
+
+/* header user panel */
+.header-user-photo {
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    border: 2px rgb(201, 201, 201) solid;
+    transition: border 0.2s;
+    margin-left: 50px;
+}
+
+.header-user-photo:hover {
+    border: 2px #4FCD94 solid;
+}
+
+.menu-block-header {
+    z-index: 9;
+    position: absolute;
+    width: 25vw;
+    height: fit-content;
+    top: 8%;
+    right: 5%;
+    border: 1px solid rgb(204, 204, 204);
+    background-color: #fff;
+    background: white;
+    box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.2);
+    padding-inline: 50px;
+
+}
+
+.logout {
+    border-top: 1px solid rgb(204, 204, 204);
+    font-weight: 600;
+    color: #656969;
+
+}
+
+.logout-button {
+    cursor: pointer;
+    width: fit-content;
+    margin-block: 20px;
+}
+
+.logout-button:hover {
+    color: red
+}
+
+.menu-header-title {
+    font-weight: 600;
+    margin-block: 20px;
+    font-size: 18px;
+    width: fit-content;
+    margin-top: 30px;
+}
+
+.menu-header-item {
+    cursor: pointer;
+    margin-bottom: 20px;
+    color: #252525;
+}
+
+.menu-header-item:hover {
+    color: #4FCD94;
+}
+
+.menu-header-icon {
+    margin-right: 20px;
+}

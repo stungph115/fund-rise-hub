@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { useSelector } from 'react-redux'
 import DOMPurify from "dompurify"
-import socket from "./utils/socket"
+import { socket } from "./utils/socket"
 
 const NotificationWindows = () => {
     const currentUserId = useSelector((state) => state.userReducer.id)

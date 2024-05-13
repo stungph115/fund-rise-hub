@@ -6,17 +6,24 @@ import SignIn from "./Auth/SignIn";
 import SignUp from "./Auth/SignUp";
 import NotFound from "./ErrorPage/NotFoundPage";
 import ForbiddenPage from "./ErrorPage/403Page";
+import Profile from "./Profile/Profile";
+import Message from "./Message/Message";
+import Project from "./Project/Project";
 
 export default function AppRoutes({ }) {
     return (
         <Routes>
-            <Route path='/home' element={<Home />} />
+            <Route path='/' element={<Home />} />
             <Route path='/forget-password' element={<ForgetPassword />} />
             <Route path='/reset-password/:token' element={<ResetPassword />} />
-            <Route path="/signIn" element={<SignIn />} />
-            <Route path="/signIn" element={<SignUp />} />
+            <Route path="/sign-in" element={<SignIn />} />
+            <Route path="/sign-up" element={<SignUp />} />
             <Route path="/not-found" element={<NotFound />} />
             <Route path="/403" element={<ForbiddenPage />} />
+            <Route path="/profile/:userId" element={<Profile />} />
+            <Route path="/message" element={<Message />} />
+            <Route path="/project/:projectId" element={<Project />} />
+            <Route path="/project/:projectId" element={<Project />} />
         </Routes>
     )
 }
