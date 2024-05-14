@@ -51,7 +51,7 @@ function SignIn() {
                 const JWTDecoded = jwt_decode(response.data)
                 saveInfoUser({ role: JWTDecoded.role.name, email: JWTDecoded.email, firstname: JWTDecoded.firstname, lastname: JWTDecoded.lastname, tokenJWT: response.data, id: JWTDecoded.id, photo: JWTDecoded.photo })
                 setAuthToken(response.data)
-                const toastMessage = <span>Bonjour, <strong>{JWTDecoded.firstname}</strong></span>;
+                const toastMessage = <span>👋 Bonjour, <strong>{JWTDecoded.firstname}</strong></span>;
                 toast.update(toastId, { render: toastMessage, type: "success", isLoading: false, autoClose: 5000 })
                 navigate('/')
                 setIsLoading(false)

@@ -1,5 +1,174 @@
-.profil-user-photo {
-    height: 200px;
-    width: 200px;
+.profile-wrapper {
+    margin-top: 50px;
+    width: 44vw;
+}
+
+.profile-user-photo {
+    height: 210px;
+    width: 210px;
+    transition: all 0.1s;
+}
+
+.profile-user-photo-small {
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+}
+
+.profile-user-photo:hover {
+    border: 5px #d8d8d8 dashed;
+    padding: 5px;
+}
+
+.profile-top {
+    display: flex;
+    justify-content: space-between;
+    /* This will evenly distribute the two child elements */
+    align-items: center;
+}
+
+.profile-left {
+    margin-left: 50px;
+    width: 100%;
+}
+
+.profile-left .button-change-avatar {
+    margin-top: 15px;
+}
+
+.profile-moreinfo {
+    display: flex;
+    color: #6e6e6e;
+}
+
+.button-change-avatar {
+    margin-top: 43px;
+    text-align: center;
+    padding-inline: 10px;
+    padding-block: 5px;
+    border-radius: 5px;
+    /*  border: 1px solid #6e6e6e; */
+    background-color: white;
+    color: #6e6e6e;
     cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.12);
+
+}
+
+.button-follow {
+    /* margin-top: 32px; */
+    text-align: center;
+    padding-inline: 10px;
+    padding-block: 5px;
+    border-radius: 5px;
+    /*  border: 1px solid #6e6e6e; */
+    background-color: #6e6e6e;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    /*  box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.12); */
+}
+
+.button-change-avatar:hover,
+.button-follow:hover {
+    background-color: #4FCD94;
+    color: white;
+    /*     border: 1px solid #4FCD94;
+ */
+}
+
+.profile-form-buttons {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.profile-forms-button:hover {
+    transform: scale(1.4);
+}
+
+.profile-use-info {
+    background-color: white;
+    padding: 20px;
+    padding-left: 50px;
+    border-radius: 5px;
+    box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.12);
+
+}
+
+.profile-bottom {
+    border: 1px solid #d8d8d8;
+    text-align: center;
+    margin-top: 20px;
+    width: 100%;
+    background-color: white;
+
+    border-radius: 5px;
+    box-shadow: 0px 6px 16px 0px rgba(0, 0, 0, 0.12);
+}
+
+.profile-bottom-switch {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #d8d8d8;
+}
+
+.profile-switch-button {
+    padding: 15px;
+    padding-inline: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    color: rgb(105, 105, 105);
+}
+
+.profile-switch-button.chosen {
+    color: black;
+    border-bottom: #4FCD94 5px solid;
+}
+
+.profile-info-contact {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.profile-bottom-content {
+    padding: 20px;
+}
+
+.button-follower {
+    cursor: pointer;
+    color: rgb(105, 105, 105);
+}
+
+.button-follower:hover {
+    color: #4FCD94
+}
+
+.follower {
+    padding: 10px;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.follow-remove {
+    margin-left: 20px;
+    cursor: pointer;
+    
+}
+
+.follow-remove:hover {
+
+    color: red;
+}
+
+.follower-name {
+    cursor: pointer;
+}
+
+.follower-name:hover {
+    color: #4FCD94
 }

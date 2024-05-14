@@ -14,6 +14,11 @@ import { useEffect } from 'react'
 import axios from 'axios'
 import { env } from './env'
 import axiosConfig from './utils/axiosConfig';
+import { loadStripe } from '@stripe/stripe-js'
+import { Elements } from '@stripe/react-stripe-js'
+
+const stripePromise = loadStripe(env.PUBLIC_KEY_STRIPE)
+
 function App() {
 
   const navigate = useNavigate()
@@ -26,7 +31,9 @@ function App() {
       <div className='app-body'>
         <ToastContainer position='top-left' theme='light' style={{ marginTop: "12vh" }}
         />
-        <AppRoutes />
+        <Elements stripe={stripePromise}>
+          <AppRoutes />
+        </Elements>
       </div>
       <Footer />
       <NotificationWindows />

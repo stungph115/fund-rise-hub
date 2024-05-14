@@ -1,3 +1,17 @@
+import { faCcAmex, faCcMastercard, faCcVisa } from "@fortawesome/free-brands-svg-icons"
+import { faCreditCard } from "@fortawesome/free-solid-svg-icons"
+import 'moment/locale/fr'
+import moment from 'moment'
+moment.locale('fr')
+
+export const formatDateTime = (dateTimeString) => {
+    const formattedDateTime = moment(dateTimeString).format('DD MMM YYYY [à] HH[h]mm')
+    return formattedDateTime
+}
+export const formatMonthYear = (dateTimeString) => {
+    const formattedDateTime = moment(dateTimeString).format(' MMM YYYY')
+    return formattedDateTime
+}
 export const formatMontant = (montant) => {
     const formatter = new Intl.NumberFormat('fr-FR', {
         style: 'currency',
@@ -30,4 +44,18 @@ export const addSpacesToNumber = (number) => {
 
     // Return the result string
     return result;
+}
+
+export const getIconByBrand = (brand) => {
+    switch (brand) {
+        case 'visa':
+            return faCcVisa
+        case 'mastercard':
+            return faCcMastercard
+        case 'american_express':
+            return faCcAmex
+        // Add more cases for other card brands if needed
+        default:
+            return faCreditCard
+    }
 }

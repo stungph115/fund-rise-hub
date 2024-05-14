@@ -9,6 +9,7 @@ import ForbiddenPage from "./ErrorPage/403Page";
 import Profile from "./Profile/Profile";
 import Message from "./Message/Message";
 import Project from "./Project/Project";
+import Payment from "./Payment/Payment";
 
 export default function AppRoutes({ }) {
     return (
@@ -24,6 +25,7 @@ export default function AppRoutes({ }) {
             <Route path="/message" element={<Message />} />
             <Route path="/project/:projectId" element={<Project />} />
             <Route path="/project/:projectId" element={<Project />} />
+            <Route path="/payment" element={<Payment />} />
         </Routes>
     )
 }

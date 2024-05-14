@@ -3,13 +3,13 @@ import { Image } from 'react-bootstrap';
 import { removeStoreUser } from '../../store/actions/userAction'
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
-import Cookies from 'js-cookie'
 import axios from 'axios';
 import { env } from '../../env';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faCreditCard, faEnvelope, faHeart, faUser } from '@fortawesome/free-regular-svg-icons';
-import { faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import setAuthToken from '../../utils/axiosConfig';
+import { toast } from 'react-toastify';
 function HeaderUserPanel({ currentUser, toggleMenu }) {
     const navigate = useNavigate()
 
@@ -22,12 +22,15 @@ function HeaderUserPanel({ currentUser, toggleMenu }) {
             removeInfoUser()
             setAuthToken(null)
             navigate('/')
+
         }).catch(error => {
             console.error(error)
             removeInfoUser()
             setAuthToken(null)
             navigate('/')
         })
+        toast.info("Déconnecté", { autoClose: 5000, toastId: 'unauthorized' })
+
     }
     return (
         <>
@@ -45,7 +48,10 @@ function HeaderUserPanel({ currentUser, toggleMenu }) {
                         <FontAwesomeIcon size='lg' icon={faBell} className='menu-header-icon' />Notifications
 
                     </div>
-                    <div className='menu-header-item'>
+                    <div className='menu-header-item' onClick={() => {
+                        navigate('/message')
+                        toggleMenu()
+                    }}>
                         <FontAwesomeIcon size='lg' icon={faEnvelope} className='menu-header-icon' />Messages
                     </div>
                 </div>
@@ -54,7 +60,10 @@ function HeaderUserPanel({ currentUser, toggleMenu }) {
                     <div className='menu-header-item'>
                         <FontAwesomeIcon size='lg' icon={faHeart} className='menu-header-icon' />Favorites
                     </div>
-                    <div className='menu-header-item'>
+                    <div className='menu-header-item' onClick={() => {
+                        navigate('/payment')
+                        toggleMenu()
+                    }}>
                         <FontAwesomeIcon size='lg' icon={faCreditCard} className='menu-header-icon' />Paiements
                     </div>
                     <div className='menu-header-item'>
@@ -64,7 +73,7 @@ function HeaderUserPanel({ currentUser, toggleMenu }) {
             </div >
 
             <div className='logout'>
-                <div className='logout-button' onClick={logout}>Déconnexion</div>
+                <div className='logout-button' onClick={logout}> <FontAwesomeIcon icon={faRightFromBracket} style={{ marginRight: 10 }} /> Déconnexion</div>
             </div>
         </>
     );
