@@ -59,7 +59,7 @@ function Footer() {
             <div className='footer-middle-lower'>
                 <div className='footer-middle-lower-left'>
                     <Image src={logoBlack} style={{ height: 30, marginRight: 10 }} />
-                    <div> - Fund Rise Hub, PBC © 2024</div>
+                    <div> - Fund Rise Hub, © 2024</div>
                 </div>
                 <div className='footer-middle-lower-right'>
                     <div className='footer-brand'>

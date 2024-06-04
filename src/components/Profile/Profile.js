@@ -81,7 +81,6 @@ function Profile() {
         getCurrentUserInfo()
     }, [currentUser])
 
-    console.log('current user info: ', currentUserInfo)
     function getUserInfo(id) {
         axios.get(env.URL + 'user/' + id).then((res) => {
             setUser(res.data)
@@ -147,7 +146,6 @@ function Profile() {
         reader.onload = () => {
             setImageSrc(reader.result);
         };
-
         reader.readAsDataURL(file);
     };
     function updateUserInfo() {
@@ -194,7 +192,6 @@ function Profile() {
 
     //follow
     const [isFollowed, setIsFollowed] = useState(false)
-    console.log(isFollowed)
     useEffect(() => {
         if (currentUserInfo && currentUserInfo.follower.some(obj => obj.following.id === user.id)) {
             setIsFollowed(true)
@@ -204,6 +201,8 @@ function Profile() {
     }, [user, currentUserInfo])
 
     function followAnUser() {
+        console.log('idFollower: ', currentUser.id + ' - ' +
+            'idFollowing: ', user.id)
         axios.post(env.URL + 'follow', {
             idFollower: currentUser.id,
             idFollowing: user.id
@@ -227,6 +226,26 @@ function Profile() {
     }
     const [showFollowers, setShowFollowers] = useState(false)
     const [showFollowings, setShowFollowings] = useState(false)
+
+    //create conversation if not existe then go to message
+    async function createConversation() {
+        if (currentUser.id && user && user.id && user.id !== currentUser.id) {
+            axios.get(env.URL + `conversation/check/${currentUser.id}/${user.id}`).then((res) => {
+                if (!res.data.exists) {
+                    axios.post(env.URL + 'conversation', {
+                        user1Id: currentUser.id,
+                        user2Id: user.id
+                    }).then((res) => {
+                        console.log(res)
+                    }).catch((err) => {
+                        console.log(err)
+                    })
+                }
+            }).catch((err) => {
+                console.log(err)
+            })
+        }
+    }
     return (
         <>
             {user &&
@@ -306,7 +325,7 @@ function Profile() {
                                                     </div>
                                                 }
 
-                                                <div className='button-follow' style={{ marginLeft: 5 }}>
+                                                <div className='button-follow' style={{ marginLeft: 5 }} onClick={() => createConversation()}>
                                                     Message <FontAwesomeIcon icon={faMessage} />
                                                 </div>
                                             </div>

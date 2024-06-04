@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Form, Image, InputGroup } from 'react-bootstrap'
+import { Image } from 'react-bootstrap'
 import '../../styles/Header.css'
 import logo from '../../assets/logo.png'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import axios from 'axios'
 import { env } from '../../env'
 import { useLocation, useNavigate } from 'react-router'
@@ -12,7 +10,7 @@ import { useSelector } from 'react-redux'
 import HeaderUserPanel from './HeaderUserPanel'
 import avatarDefault from '../../assets/default-avata.jpg'
 import { socket } from '../../utils/socket'
-import { faBell } from '@fortawesome/free-regular-svg-icons'
+import HeaderSearch from './HeaderSearch'
 
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -45,7 +43,6 @@ function Header() {
     const navigate = useNavigate()
     const currentRoute = location.pathname
     const [categories, setCategories] = useState([])
-    const [search, setSearch] = useState("")
     const [hoveredCategory, setHoveredCategory] = useState(null)
     const [isHovering, setIsHovering] = useState(false)
 
@@ -80,13 +77,8 @@ function Header() {
         return () => {
             socket.off('user_updated_' + currentUser.id)
         }
-    }, [])
+    }, [currentUser])
 
-    useEffect(() => {
-        if (search !== "") {
-            //show recommends
-        }
-    }, [search])
 
     function getCategories() {
         axios.get(env.URL + 'category')
@@ -118,18 +110,7 @@ function Header() {
                             <Image className='header-logo' src={logo} />
                         </div>
                     </Fade>
-                    <Fade top>
-                        <div className='header-search-bar'>
-                            <InputGroup size="lg" className='header-search-bar-inner'>
-                                <InputGroup.Text style={{ backgroundColor: 'white', borderRight: "none" }}>
-                                    <FontAwesomeIcon icon={faSearch} />
-                                </InputGroup.Text>
-                                <Form.Control style={{ borderLeft: "none" }}
-                                    placeholder="Chercher projets, créateurs ou catégories"
-                                />
-                            </InputGroup>
-                        </div>
-                    </Fade>
+                    <HeaderSearch categories={categories} />
                     <Fade right>
                         <div className='header-right'>
                             <div className='button-create-project'> Démarrer un projet</div>
@@ -140,7 +121,7 @@ function Header() {
                                         className='header-user-photo'
                                         onClick={toggleMenu}
                                     />
-                                    {/* <FontAwesomeIcon icon={faBell} /> */}
+
                                 </>
 
                                 :

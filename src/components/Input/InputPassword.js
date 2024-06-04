@@ -38,7 +38,7 @@ const InputPassword = forwardRef((props, ref) => {
                 }}
                 onKeyPress={(event) => props.onPressEnter && event.key === "Enter" ? props.onPressEnter() : null}
             />
-            <InputGroup.Text onClick={() => setShowPassword(!showPassword)} style={{ borderWidth: 2, backgroundColor: 'white', borderLeft: "none", height: 40, borderColor: props.passwordError == null ? null : !props.passwordError ? colors.success : colors.error, fontSize: 18, fontWeight: 600 }}>
+            <InputGroup.Text onClick={() => setShowPassword(!showPassword)} style={{ borderWidth: 2, backgroundColor: 'white', borderLeft: "none", height: 40, borderColor: props.passwordError == null ? null : !props.passwordError ? colors.success : colors.error, fontSize: 18, fontWeight: 600, cursor: 'pointer' }}>
                 <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
             </InputGroup.Text>
         </InputGroup>

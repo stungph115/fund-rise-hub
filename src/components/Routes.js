@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router";
+import { Navigate, Route, Routes } from "react-router";
 import Home from "./Home/Home";
 import ResetPassword from "./Auth/ResetPassword";
 import ForgetPassword from "./Auth/ForgotPassword";
@@ -24,8 +24,9 @@ export default function AppRoutes({ }) {
             <Route path="/profile/:userId" element={<Profile />} />
             <Route path="/message" element={<Message />} />
             <Route path="/project/:projectId" element={<Project />} />
-            <Route path="/project/:projectId" element={<Project />} />
             <Route path="/payment" element={<Payment />} />
+
+            <Route path="*" element={<Navigate to="/not-found" />} />
         </Routes>
     )
 }

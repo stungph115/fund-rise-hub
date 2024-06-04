@@ -16,11 +16,12 @@ import { env } from './env'
 import axiosConfig from './utils/axiosConfig';
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
+import { useAxiosInterceptor } from './axiosInterceptor'
 
 const stripePromise = loadStripe(env.PUBLIC_KEY_STRIPE)
 
 function App() {
-
+  useAxiosInterceptor()
   const navigate = useNavigate()
   // get tokenJWT from store
   const tokenJWTStore = useSelector((state) => state.userReducer.tokenJWT)
