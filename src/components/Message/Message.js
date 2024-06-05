@@ -5,7 +5,7 @@ import axios from 'axios'
 import { env } from '../../env'
 import { Badge, Form, Image, InputGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faX } from '@fortawesome/free-solid-svg-icons'
 import { Fade } from 'react-reveal'
 import ChatBox from './ChatBox'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -44,7 +44,6 @@ function Message() {
     useEffect(() => {
         getConversations()
     }, [])
-    console.log("all conversations got: ", conversations)
     //update conversation after conversations changed
     useEffect(() => {
         if (conversation && conversation.length !== 0) {
@@ -156,7 +155,6 @@ function Message() {
 
         return createdAtB - createdAtA
     })
-    console.log('mergedData: ', mergedData)
 
     const handleItemClick = (item, index) => {
         const searchParams = new URLSearchParams(location.search)
@@ -172,14 +170,19 @@ function Message() {
                     <div className='inbox-list-title'> Messageries</div>
                     <div className='inbox-list-search'>
                         <InputGroup size="lg" className='inbox-list-search-bar' style={{}}>
-                            <InputGroup.Text style={{ backgroundColor: 'white', borderRight: "none", borderRadius: '25px 0px 0px 25px', backgroundColor: "#F0F2F5" }}>
+                            <InputGroup.Text style={{ borderRight: "none", borderRadius: '25px 0px 0px 25px', backgroundColor: "#F0F2F5" }}>
                                 <FontAwesomeIcon icon={faSearch} style={{ color: "#656969" }} />
                             </InputGroup.Text>
-                            <Form.Control style={{ borderLeft: "none", borderRadius: '0px 25px 25px 0px', backgroundColor: "#F0F2F5" }}
+                            <Form.Control style={{ borderInline: "none", backgroundColor: "#F0F2F5" }}
                                 placeholder="Chercher utilisateurs ou messages"
                                 value={searchName}
                                 onChange={(e) => setSearchName(e.target.value)}
                             />
+                            <InputGroup.Text style={{ borderLeft: "none", borderRadius: '0px 25px  25px  0px ', backgroundColor: "#F0F2F5", width: 'fit-content' }}>
+                                <div className='search-chat-clear-filter' onClick={() => setSearchName('')}>
+                                    {searchName !== "" && <FontAwesomeIcon icon={faX} size='xs' />}
+                                </div>
+                            </InputGroup.Text>
                         </InputGroup>
                     </div>
                     <div className='inbox-list-conversations'>

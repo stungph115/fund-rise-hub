@@ -108,4 +108,13 @@
     color: #4FCD94;
 }
 
+.search-chat-clear-filter {
+    color: #656969;
+    cursor: pointer;
+}
+
+.search-chat-clear-filter:hover {
+    color: #4FCD94
+}
+
 .inbox-chatbox {}
