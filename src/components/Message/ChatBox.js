@@ -8,8 +8,10 @@ import { useEffect, useRef, useState } from "react"
 import EmojiPicker from "emoji-picker-react"
 import { toast } from "react-toastify"
 import { v4 as uuidv4 } from 'uuid'
+import { useNavigate } from "react-router-dom"
 
 function ChatBox({ conversation }) {
+    const navigate = useNavigate()
     //current user
     const user = useSelector((state) => state.userReducer)
     console.log(conversation)
@@ -91,9 +93,12 @@ function ChatBox({ conversation }) {
     }, [message])
 
     useEffect(() => {
-        inputRef.current.focus()
-        inputRef.current.selectionStart = cursorPositionRef.current
-        inputRef.current.selectionEnd = cursorPositionRef.current
+        if (inputRef.current) {
+            inputRef.current.focus()
+            inputRef.current.selectionStart = cursorPositionRef.current
+            inputRef.current.selectionEnd = cursorPositionRef.current
+        }
+
     }, [textOverflowed])
     // emoji picker
     const handleDocumentClick = (event) => {
@@ -146,21 +151,16 @@ function ChatBox({ conversation }) {
     } else {
         const otherUser = conversation.participants.filter(participant => participant.id !== user.id)[0]
 
-
-
-
-
-
         return (
             <div className="inbox-chatbox">
                 {/* chat header(avatar and name and button info)  */}
                 <div className="inbox-chatbox-header">
                     {/* avatar and name */}
-                    <div style={{ display: "flex", justifyContent: 'center', alignItems: 'center' }}>
+                    <div className="inbox-chatbow-header-user" onClick={() => navigate('/profile/' + otherUser.id)}>
                         <div>
                             <Image src={otherUser && otherUser.photo ? env.URL + 'file/' + otherUser.photo : avatarDefault}
                                 roundedCircle
-                                style={{ height: '6vh', marginInline: 20 }}
+                                style={{ height: '6vh', marginRight: 20 }}
                             />
                         </div>
                         <div>

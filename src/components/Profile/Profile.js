@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router';
 import axios from 'axios';
 import { env } from '../../env';
 import avatarDefault from '../../assets/default-avata.jpg';
-import { Button, Form, Image, Modal } from 'react-bootstrap';
+import { Button, Form, Image, Modal, ModalHeader } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Fade } from 'react-reveal';
 import { formatMonthYear } from '../../utils/utils';
@@ -28,7 +28,7 @@ function Profile() {
 
     const [user, setUser] = useState(null)
     const [currentUserInfo, setCurrentUserInfo] = useState(null)
-
+    console.log(currentUserInfo)
     const idUser = useParams().userId
     useEffect(() => {
         getUserInfo(idUser)
@@ -321,7 +321,7 @@ function Profile() {
                                         <h1>{user.firstname} {user.lastname}</h1>
 
                                         <div className='profile-moreinfo'>
-                                            <p style={{ marginRight: 10 }}>0 projets soutenus  . </p>
+                                            <p style={{ marginRight: 10 }}>0 projets soutenus  · </p>
                                             <p>Inscription : {formatMonthYear(user.createdAt)}</p>
                                         </div>
                                         <div style={{ width: 'fit-content' }}>
@@ -331,7 +331,7 @@ function Profile() {
                                         {isMyProfile &&
                                             <div style={{ display: 'flex' }}>
                                                 <div className='button-follower' style={{ marginRight: 10 }} onClick={() => setShowFollowings(true)}>{currentUserInfo && currentUserInfo.follower && currentUserInfo.follower.length && currentUserInfo.follower.length} abonnements</div>
-                                                .
+                                                ·
                                                 <div className='button-follower' style={{ marginLeft: 10 }} onClick={() => setShowFollowers(true)}> {currentUserInfo && currentUserInfo.following && currentUserInfo.following.length && currentUserInfo.following.length} abonnés</div>
                                             </div>
                                         }
@@ -442,7 +442,7 @@ function Profile() {
                     {/* modal following list */}
                     <Modal size='sm' show={showFollowings} onHide={() => setShowFollowings(false)} centered>
                         <Modal.Body className="d-flex justify-content-center align-items-center" >
-                            <div>
+                            <div className='follower-list-scrollable'>
                                 {currentUserInfo && currentUserInfo.follower.map(item => (
                                     <div key={item.id} className='follower'>
                                         <Image
@@ -464,16 +464,16 @@ function Profile() {
                     {/* modal follower list */}
                     <Modal size='sm' show={showFollowers} onHide={() => setShowFollowers(false)} centered>
                         <Modal.Body className="d-flex justify-content-center align-items-center" >
-                            <div>
+                            <div className='follower-list-scrollable'>
                                 {currentUserInfo && currentUserInfo.following.map(item => (
                                     <div key={item.id} className='follower'>
                                         <Image
-                                            src={item.photo ? env.URL + 'file/' + item.photo : avatarDefault}
+                                            src={item.follower.photo ? env.URL + 'file/' + item.follower.photo : avatarDefault}
                                             roundedCircle
                                             className="profile-user-photo-small"
                                         />
                                         <div className='follower-name' onClick={() => {
-                                            navigate("/profile/" + item.following.id)
+                                            navigate("/profile/" + item.follower.id)
                                             setShowFollowers(false)
                                         }}> {item.follower.firstname} {item.follower.lastname}</div>
                                         <div className='follow-remove'><FontAwesomeIcon icon={faBan} /></div>

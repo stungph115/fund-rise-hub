@@ -147,17 +147,17 @@
 }
 
 .follower {
-    padding: 10px;
+    margin: 10px;
     font-weight: 600;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-between;
     align-items: center;
 }
 
 .follow-remove {
     margin-left: 20px;
     cursor: pointer;
-    
+
 }
 
 .follow-remove:hover {
@@ -167,8 +167,38 @@
 
 .follower-name {
     cursor: pointer;
+    text-align: left;
+    width: 100%;
 }
 
 .follower-name:hover {
     color: #4FCD94
+}
+
+.follower-list-scrollable {
+    max-height: 300px;
+    /* Set your desired max height */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    width: 100%;
+}
+
+/* Style the scrollbar track and thumb */
+.follower-list-scrollable::-webkit-scrollbar {
+    width: 8px;
+}
+
+.follower-list-scrollable::-webkit-scrollbar-thumb {
+    background: #bababa;
+    /* Color of the thumb */
+    border-radius: 4px;
+    box-shadow: inset 0 0 4px rgb(0, 0, 0, 0.5);
+}
+
+.follower-list-scrollable::-webkit-scrollbar-track {
+    background: #ffffff;
+    /* Color of the track */
+    border-radius: 4px;
+    /* Rounded track */
+    box-shadow: inset 0 0 3px rgb(0, 0, 0, 0.3);
 }
