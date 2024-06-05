@@ -54,6 +54,37 @@ Numéro téléphone: 07 66 77 88 99
 Email: pierre.moreau@mail.fr
 Password: Azerty1234&
 
+Nom: Laurent
+Prénom: Claire
+Numéro téléphone: 07 22 33 44 55
+Email: claire.laurent@mail.fr
+Password: Azerty1234&
+
+Nom: Richard
+Prénom: Elise
+Numéro téléphone: 07 88 77 66 55
+Email: elise.richard@mail.fr
+Password: Azerty1234&
+
+Nom: Simon
+Prénom: Nathalie
+Numéro téléphone: 07 44 55 66 77
+Email: nathalie.simon@mail.fr
+Password: Azerty1234&
+
+
+Nom: Durand
+Prénom: Thomas
+Numéro téléphone: 07 33 22 11 00
+Email: thomas.durand@mail.fr
+Password: Azerty1234&
+
+Nom: Petit
+Prénom: Alexandre
+Numéro téléphone: 07 99 88 77 66
+Email: alexandre.petit@mail.fr
+Password: Azerty1234&
+
 ****testing admin cresdential:
 admin@fundrisehub.fr
 Azerty1234&

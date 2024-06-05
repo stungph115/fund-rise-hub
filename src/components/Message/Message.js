@@ -84,7 +84,8 @@ function Message() {
     const formatTimestamp = (timestamp) => {
         if (currentTime) {
             const date = new Date(timestamp)
-            return formatDistanceToNow(date, { addSuffix: true })
+            const distance = formatDistanceToNow(date, { addSuffix: true })
+            return distance.replace(/^il y a environ /, '').replace(/^il y a /, '').replace(/^moins d’une minute/, "maintenant")
         }
     }
 
@@ -217,13 +218,12 @@ function Message() {
                                 const filteredData = item.mergeMessageAndFiles.filter(obj => obj.read === 0 && obj.user.id !== user.id)
                                 const countUnreadMessage = filteredData.length
                                 const otherUser = item.participants.filter(participant => participant.id !== user.id)[0]
-                                console.log(otherUser)
                                 return (
                                     <div
                                         className={`${isSelected ? "chat-box--list-chat-selected-item" : "chat-box--list-chat"}`}
                                         key={item.id}
                                         onClick={() => handleItemClick(item, item.id)}
-                                        style={{ opacity: (countUnreadMessage > 0) ? 1 : 0.7, fontWeight: (countUnreadMessage > 0) ? 700 : 400 }}
+                                        style={{ opacity: (countUnreadMessage > 0) ? 1 : 0.8, fontWeight: (countUnreadMessage > 0) ? 700 : 400 }}
                                     >
 
                                         <div style={{ display: 'flex', flexDirection: 'row', fontSize: 18, marginBottom: 10, justifyContent: 'space-between' }}>
@@ -246,7 +246,7 @@ function Message() {
                                             </div>
                                         </div>
                                         <div style={{ display: "flex", justifyContent: 'space-between' }}>
-                                            <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '400px', paddingInline: 10, }}>
+                                            <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '320px', paddingInline: 10, }}>
                                                 {hasMessagesOrFiles ? (
                                                     // Display the last message or file
                                                     <>
@@ -274,14 +274,19 @@ function Message() {
                                                 )}
 
                                             </div>
+
                                             <div style={{ marginRight: 5 }}>
-                                                {hasMessagesOrFiles ? formatTimestamp(Object.values(item.mergeMessageAndFiles)[0].createdAt) : formatTimestamp(item.createdAt)}
+                                                <div style={{ display: 'flex' }}>
+                                                    <div style={{ display: 'flex', alignItems: 'center', height: '100%', marginRight: 2 }}>·</div>
+                                                    {hasMessagesOrFiles ? formatTimestamp(Object.values(item.mergeMessageAndFiles)[0].createdAt) : formatTimestamp(item.createdAt)}
+                                                </div>
+
                                             </div>
                                         </div>
 
                                         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '400px', paddingInline: 10, fontWeight: 'bold' }}>
                                             {matchingMessageCount > 0 && (
-                                                <span className="matching-message-count">
+                                                <span className={isSelected ? "matching-message-count-selected" : "matching-message-count"}>
                                                     {matchingMessageCount} {matchingMessageCount > 1 ? 'messages correspondants' : 'message correspondant'}
                                                 </span>
                                             )}
@@ -293,9 +298,7 @@ function Message() {
                     </div>
                 </div>
 
-                <div className='inbox-chatbox'>
-                    <ChatBox conversation={conversation} />
-                </div>
+                <ChatBox conversation={conversation} />
             </div>
         </Fade>
 

@@ -240,7 +240,7 @@ function Profile() {
             axios.get(env.URL + `conversation/check/${currentUser.id}/${user.id}`).then((res) => {
                 console.log(res.data.exists)
                 if (res.data.exists) {
-                    //go to message with params conversation
+                    navigate('/message?id=' + res.data.exists)
                 } else {
                     setShowMessageInput(true)
                 }
@@ -257,10 +257,11 @@ function Profile() {
             message: message
         }).then((res) => {
             console.log(res)
-            if (res.status === 201) {
+            if (res.status === 201 && res.data.id) {
                 setShowMessageInput(false)
                 setMessage('')
                 //navigate to message
+                navigate('/message?id=' + res.data.id)
             }
         }).catch((err) => {
             console.log(err)
