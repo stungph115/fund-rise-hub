@@ -284,3 +284,14 @@
 .header-search-result-item-list-item:hover {
     color: #4FCD94
 }
+
+.header-search-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.header-search-close:hover {
+    color: #4FCD94;
+}

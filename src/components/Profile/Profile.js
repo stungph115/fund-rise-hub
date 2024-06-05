@@ -4,16 +4,16 @@ import { useNavigate, useParams } from 'react-router';
 import axios from 'axios';
 import { env } from '../../env';
 import avatarDefault from '../../assets/default-avata.jpg';
-import { Button, Image, Modal } from 'react-bootstrap';
+import { Button, Form, Image, Modal } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { Fade } from 'react-reveal';
 import { formatMonthYear } from '../../utils/utils';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComment, faCreditCard, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { faCreditCard } from '@fortawesome/free-regular-svg-icons';
 import InputName from '../Input/InputName';
 import InputEmail from '../Input/InputEmail';
 import InputPhone from '../Input/InputPhone';
-import { faAsterisk, faCamera, faCheck, faPlus, faSpinner, faUserPen, faUserPlus, faX, faMessage, faUserMinus, faBan, } from '@fortawesome/free-solid-svg-icons';
+import { faAsterisk, faCamera, faCheck, faSpinner, faUserPen, faUserPlus, faX, faMessage, faUserMinus, faBan, } from '@fortawesome/free-solid-svg-icons';
 import AvatarEditor from 'react-avatar-editor';
 import { toast } from 'react-toastify';
 import InputPassword from '../Input/InputPassword';
@@ -63,8 +63,15 @@ function Profile() {
     const [oldPassword, setOldPassword] = useState("")
     const [oldPasswordError, setOldPasswordError] = useState(null)
 
+    //first message for creating conversation
+    const [showMessageInput, setShowMessageInput] = useState(false)
+    const [message, setMessage] = useState('')
+
     //button switch
     const [switchValue, setSwitchValue] = useState(1)
+
+    //loading
+    const [isLoadingSendMessage, setIsLoadingSendMessage] = useState(false)
     useEffect(() => {
         getUserInfo(idUser)
     }, [])
@@ -228,23 +235,37 @@ function Profile() {
     const [showFollowings, setShowFollowings] = useState(false)
 
     //create conversation if not existe then go to message
-    async function createConversation() {
-        if (currentUser.id && user && user.id && user.id !== currentUser.id) {
+    async function checkConversationExiste(userId) {
+        if (currentUser.id && userId) {
             axios.get(env.URL + `conversation/check/${currentUser.id}/${user.id}`).then((res) => {
-                if (!res.data.exists) {
-                    axios.post(env.URL + 'conversation', {
-                        user1Id: currentUser.id,
-                        user2Id: user.id
-                    }).then((res) => {
-                        console.log(res)
-                    }).catch((err) => {
-                        console.log(err)
-                    })
+                console.log(res.data.exists)
+                if (res.data.exists) {
+                    //go to message with params conversation
+                } else {
+                    setShowMessageInput(true)
                 }
             }).catch((err) => {
                 console.log(err)
             })
         }
+    }
+    async function createConversation(userId) {
+        setIsLoadingSendMessage(true)
+        await axios.post(env.URL + 'conversation', {
+            user1Id: currentUser.id,
+            user2Id: userId,
+            message: message
+        }).then((res) => {
+            console.log(res)
+            if (res.status === 201) {
+                setShowMessageInput(false)
+                setMessage('')
+                //navigate to message
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+        setIsLoadingSendMessage(false)
     }
     return (
         <>
@@ -313,6 +334,7 @@ function Profile() {
                                                 <div className='button-follower' style={{ marginLeft: 10 }} onClick={() => setShowFollowers(true)}> {currentUserInfo && currentUserInfo.following && currentUserInfo.following.length && currentUserInfo.following.length} abonnés</div>
                                             </div>
                                         }
+                                        {/*  other user profile */}
                                         {!isMyProfile &&
                                             <div style={{ display: 'flex'/* , justifyContent: 'space-between'  */ }}>
                                                 {isFollowed ?
@@ -325,7 +347,7 @@ function Profile() {
                                                     </div>
                                                 }
 
-                                                <div className='button-follow' style={{ marginLeft: 5 }} onClick={() => createConversation()}>
+                                                <div className='button-follow' style={{ marginLeft: 5 }} onClick={() => checkConversationExiste(user.id)}>
                                                     Message <FontAwesomeIcon icon={faMessage} />
                                                 </div>
                                             </div>
@@ -391,6 +413,7 @@ function Profile() {
                             </div>
                         </div>
                     </div>
+                    {/* modal change password */}
                     <Modal size='lg' show={showPasswordForm} onHide={() => setShowPasswordForm(false)} centered>
                         <Modal.Header closeButton className="px-4">
                             <Modal.Title className="ms-auto">Changement de mot de passe</Modal.Title>
@@ -415,6 +438,7 @@ function Profile() {
                             <Button variant='success' onClick={() => changePassword()}>Valider</Button>
                         </Modal.Footer>
                     </Modal>
+                    {/* modal following list */}
                     <Modal size='sm' show={showFollowings} onHide={() => setShowFollowings(false)} centered>
                         <Modal.Body className="d-flex justify-content-center align-items-center" >
                             <div>
@@ -436,6 +460,7 @@ function Profile() {
                             </div>
                         </Modal.Body>
                     </Modal>
+                    {/* modal follower list */}
                     <Modal size='sm' show={showFollowers} onHide={() => setShowFollowers(false)} centered>
                         <Modal.Body className="d-flex justify-content-center align-items-center" >
                             <div>
@@ -454,6 +479,36 @@ function Profile() {
                                     </div>
                                 ))}
                             </div>
+                        </Modal.Body>
+                    </Modal>
+                    {/* modal new message */}
+                    <Modal size='lg' show={showMessageInput} onHide={() => setShowMessageInput(false)} centered>
+                        <Modal.Body >
+
+                            <div style={{ padding: 20 }}>
+                                <Modal.Title className="ms-auto">Envoyer premier message à {user.firstname} {user.lastname}</Modal.Title>
+                                <div className='first-message'>
+                                    <Form.Group controlId="formMessage" className="mt-3">
+                                        <Form.Label>Votre message</Form.Label>
+                                        <Form.Control
+                                            as="textarea"
+                                            rows={3}
+                                            value={message}
+                                            onChange={(e) => setMessage(e.target.value)}
+                                            maxLength="2500"
+                                        />
+                                    </Form.Group>
+                                </div>
+                                <Button variant="success" className="mt-3" style={{ width: "100%" }} disabled={message === '' || isLoadingSendMessage} onClick={() => createConversation(user.id)}>
+                                    {isLoadingSendMessage ?
+                                        <FontAwesomeIcon icon={faSpinner} pulse style={{ color: 'gray', width: '100%', marginTop: '50px' }} size='xl' />
+                                        :
+                                        'Envoyer'
+                                    }
+
+                                </Button>
+                            </div>
+
                         </Modal.Body>
                     </Modal>
                 </Fade >

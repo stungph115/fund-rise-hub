@@ -1,4 +1,4 @@
-import { faSearch, faSpinner } from "@fortawesome/free-solid-svg-icons"
+import { faSearch, faSpinner, faX } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import axios from "axios"
 import { useEffect, useState } from "react"
@@ -70,6 +70,7 @@ function HeaderSearch({ categories }) {
                             <FontAwesomeIcon icon={faSpinner} pulse style={{ color: 'gray', width: '100%', marginTop: '50px' }} size='xl' />
                             :
                             <>
+                                <FontAwesomeIcon icon={faX} className="header-search-close" onClick={() => (setSearch(""), setShowSearchResult(false))} />
                                 <div className="header-search-result-item">
                                     <div className="header-search-result-item-title"> Catégories</div>
                                 </div>
@@ -83,7 +84,7 @@ function HeaderSearch({ categories }) {
                                                         <div className="header-search-result-item-list-item" key={i} onClick={() => (setSearch(""), setShowSearchResult(false), navigate('/profile/' + item.id))}>
                                                             <Image src={item && item.photo ? env.URL + 'file/' + item.photo : avatarDefault}
                                                                 roundedCircle
-                                                                className='header-user-photo'
+                                                                className='profile-user-photo-small'
                                                             />
                                                             <span> {item.firstname} {item.lastname}</span>
 

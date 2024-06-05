@@ -32,8 +32,78 @@
     margin-bottom: 10px;
 }
 
-/* .inbox-list-conversations {
-    border-top: 1px rgb(201, 201, 201) solid;
-} */
+.inbox-list-conversations {
+    /* border-top: 1px rgb(201, 201, 201) solid; */
+}
+
+.inbox-list-conversations {
+    height: 637px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-width: 525px;
+}
+
+/* Style the scrollbar track and thumb */
+.inbox-list-conversations::-webkit-scrollbar {
+    width: 8px;
+}
+
+.inbox-list-conversations::-webkit-scrollbar-thumb {
+    background: #bababa;
+    /* Color of the thumb */
+    border-radius: 4px;
+    box-shadow: inset 0 0 4px rgb(0, 0, 0, 0.5);
+}
+
+.inbox-list-conversations::-webkit-scrollbar-track {
+    background: #ffffff;
+    /* Color of the track */
+    border-radius: 4px;
+    /* Rounded track */
+    box-shadow: inset 0 0 3px rgb(0, 0, 0, 0.3);
+}
+
+
+
+.chat-box--list-chat {
+    color: black;
+    padding: 5px;
+    /* margin-bottom: 10px; */
+    cursor: pointer;
+    margin-inline: 10px;
+    /*     border-bottom: 2px solid white;
+ */
+}
+
+.chat-box--list-chat-selected-item {
+    /* border: 2px solid white; */
+    color: white;
+    padding: 5px;
+    background-color: #4FCD94;
+    cursor: pointer;
+    border-radius: 10px;
+    margin-inline: 10px;
+}
+
+.chat-box--list-chat:last-child {
+    margin-bottom: 0;
+    border-bottom: none;
+    /* Remove the margin for the last element */
+}
+
+.chat-box--list-chat:hover {
+    background-color: rgb(150, 150, 150);
+    color: white;
+    border-radius: 10px;
+    border-bottom: none
+}
+
+.chat-box--list-title {
+    font-weight: 600;
+    margin-right: 20px;
+    margin-left: 10px;
+}
+
+.matching-message-count {}
 
 .inbox-chatbox {}
