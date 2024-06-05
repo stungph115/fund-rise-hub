@@ -119,6 +119,7 @@
     color: #4FCD94
 }
 
+/* chatbox */
 .inbox-chatbox {
     display: flex;
     flex-direction: column;
@@ -126,6 +127,7 @@
     width: 100%;
 }
 
+/* chatbox header */
 .inbox-chatbox-header {
     height: 10%;
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
@@ -134,25 +136,199 @@
     align-items: center;
 }
 
-.inbox-chatbox-footer {
-    height: 10%;
-    border-top: 1px solid rgb(201, 201, 201);
-}
-
-.inbox-chatbox-body {
-    flex-grow: 1;
-}
-
 .inbox-chatbox-button-info {
     padding: 10px;
     margin: 10px;
     cursor: pointer;
     color: #4FCD94;
     border-radius: 100%;
-    transition: background-color 0.2s ;
+    transition: background-color 0.2s;
 }
 
 .inbox-chatbox-button-info:hover {
     background-color: #e7e7e7;
 
+}
+
+/* chatbox footer */
+.inbox-chatbox-footer {
+    border-top: 1px rgb(201, 201, 201) solid;
+    /* min-height: 10%; */
+    position: relative;
+    /* Add position relative to create a positioning context */
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 10px;
+}
+
+.more-input {
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+
+.file-preview {
+    /* Adjust the left value if needed */
+    background-color: #F1F1F1;
+    padding: 10px;
+    border-radius: 25px 25px 0 0;
+    /*  z-index: 1; */
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+}
+
+.file-preview-img {
+    border-radius: 10px;
+}
+
+.remove-file-icon:hover {
+    color: rgb(102, 102, 102)
+}
+
+.more-input {
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.add-more-files {
+    color: #888;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.add-more-files:hover {
+    color: #4FCD94;
+}
+
+.inbox-chatbox-footer .input-main {
+    flex: 1;
+    max-width: 878px;
+}
+
+.input-main .input-text {
+    padding-block: 5px;
+    padding-inline: 20px;
+    background-color: #F1F1F1;
+    border: none;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.input-main .textarea-with-file {
+    padding-block: 5px;
+    padding-inline: 20px;
+    border: none;
+    border-radius: 0 0 25px 25px;
+    background-color: #F1F1F1;
+    width: 100%;
+}
+
+.input-main .textarea {
+    padding-block: 5px;
+    padding-inline: 20px;
+    border: none;
+    background-color: #F1F1F1;
+    border-radius: 25px;
+    resize: vertical;
+    height: auto;
+    min-height: 40px;
+    width: 100%;
+}
+
+.input-main .input-text-with-file {
+    padding-block: 5px;
+    padding-inline: 20px;
+    border: none;
+    background-color: #F1F1F1;
+    border-radius: 0 0 25px 25px;
+    resize: vertical;
+    height: auto;
+    min-height: 40px;
+    width: 100%;
+}
+
+.button-send-chat,
+.button-send-chat[disabled] {
+    background-color: #4FCD94;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 16px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.button-send-chat:hover {
+    background-color: #35ad77
+}
+
+
+.button-send-chat:hover>.fa-paper-plane {
+    animation: throwAnimation 1s ease-in-out;
+}
+
+.button-send-chat>.fa-spinner {
+    animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+@keyframes throwAnimation {
+    0% {
+        transform: translateX(0) rotate(0);
+    }
+
+    50% {
+        transform: translateX(-16px) rotate(45deg);
+    }
+
+    100% {
+        transform: translateX(15px) rotate(45deg);
+    }
+}
+
+.more-input .attachement {
+    transition: transform 0.3s ease-in-out;
+}
+
+.more-input:hover .attachement {
+    transform: rotate(-45deg);
+}
+
+.emoji-picker {
+    z-index: 4;
+    position: absolute;
+    bottom: 50px;
+    /*     right: 500px; */
+}
+
+.file-preview {
+    display: inline-block;
+}
+
+.spinning-icon>.fa-spinner {
+    animation: rotation 2s infinite linear;
+}
+
+/* chatbox body */
+.inbox-chatbox-body {
+    flex-grow: 1;
 }

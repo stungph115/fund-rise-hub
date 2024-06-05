@@ -6,6 +6,8 @@ import { env } from "../../env"
 import avatarDefault from '../../assets/default-avata.jpg'
 import { useEffect, useRef, useState } from "react"
 import EmojiPicker from "emoji-picker-react"
+import { toast } from "react-toastify"
+import { v4 as uuidv4 } from 'uuid'
 
 function ChatBox({ conversation }) {
     //current user
@@ -23,6 +25,23 @@ function ChatBox({ conversation }) {
     const emojiPickerIconRef = useRef(null)
     const [isLoading, setIsLoading] = useState(false)
     //file input
+    function handleFileInputChange(event) {
+        const filesToAdd = Array.from(event.target.files).filter((file) => file.size <= 28 * 1024 * 1024).map((file) => ({
+            id: uuidv4(),
+            file: file
+        }))
+
+        const oversizedFiles = Array.from(event.target.files).filter((file) => file.size > 28 * 1024 * 1024);
+
+        if (oversizedFiles.length > 0) {
+            const fileNames = oversizedFiles.map((file) => file.name).join(', ');
+            toast.error(`Les fichiers suivants dépassent la limite de taille de 28 Mo: ${fileNames}`, {
+                autoClose: 5000
+            })
+        }
+
+        setSelectedFiles((prevFiles) => [...prevFiles, ...filesToAdd])
+    }
     function handleFileRemove(fileId) {
         setSelectedFiles((prevFiles) =>
             prevFiles.filter((file) => file.id !== fileId)
@@ -61,9 +80,53 @@ function ChatBox({ conversation }) {
     const openImageInModal = (e) => {
         setModalUrl(e.target.src)
     }
+    //swap input type
+    useEffect(() => {
+        const isTextOverflowing = message.length > 100
+        if (isTextOverflowing) {
+            setTextOverflowed(true)
+        } else {
+            setTextOverflowed(false)
+        }
+    }, [message])
 
+    useEffect(() => {
+        inputRef.current.focus()
+        inputRef.current.selectionStart = cursorPositionRef.current
+        inputRef.current.selectionEnd = cursorPositionRef.current
+    }, [textOverflowed])
+    // emoji picker
+    const handleDocumentClick = (event) => {
+        if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target) && emojiPickerIconRef.current && !emojiPickerIconRef.current.contains(event.target)) {
+            setShowEmojiPicker(false);
+        }
+    }
+    useEffect(() => {
+        document.addEventListener('mousedown', handleDocumentClick);
+        return () => {
+            document.removeEventListener('mousedown', handleDocumentClick);
+        }
+    }, [])
 
-    function sendChat() { }
+    // emoji mouse hovered
+    const [hovered, setHovered] = useState(false)
+    const handleMouseEnter = () => {
+        setHovered(true)
+    }
+    const handleMouseLeave = () => {
+        setHovered(false)
+    }
+    const handleEmojiClick = (emojiData) => {
+        const currentMessage = message
+        const updatedMessage = `${currentMessage} ${String.fromCodePoint(
+            parseInt(emojiData.unified, 16)
+        )}`
+        setMessage(updatedMessage)
+    }
+
+    function sendChat() {
+        console.log("send")
+    }
     //render null
     if (!conversation || (conversation && conversation.length === 0)) {
         const containerStyle = {
@@ -85,20 +148,7 @@ function ChatBox({ conversation }) {
 
 
 
-        // emoji picker
-        const handleDocumentClick = (event) => {
-            if (emojiPickerRef.current && !emojiPickerRef.current.contains(event.target) && emojiPickerIconRef.current && !emojiPickerIconRef.current.contains(event.target)) {
-                setShowEmojiPicker(false);
-            }
-        }
-        // emoji mouse hovered
-        const [hovered, setHovered] = useState(false)
-        const handleMouseEnter = () => {
-            setHovered(true)
-        }
-        const handleMouseLeave = () => {
-            setHovered(false)
-        }
+
 
 
         return (
@@ -126,12 +176,21 @@ function ChatBox({ conversation }) {
 
                 {/* chat body (messages bla bla) */}
                 <div className="inbox-chatbox-body" ref={chatBodyRef}>lalala</div>
+                {
+                    showEmojiPicker && <div className='emoji-picker' ref={emojiPickerRef}><EmojiPicker onEmojiClick={handleEmojiClick} /></div>
+                }
 
+                <input
+                    type="file"
+                    onChange={handleFileInputChange}
+                    multiple
+                    style={{ display: 'none' }}
+                    ref={inputFileRef} />
 
                 {/* chat footer (inputs, button send) */}
                 <div className="inbox-chatbox-footer">
-                    {selectedFiles.length === 0 && <div className='more-input' onClick={() => inputFileRef.current.click()}><FontAwesomeIcon icon={faPaperclip} size='lg' style={{ color: 'white' }} className='attachement' /></div>}
-                    <div className='more-input' ref={emojiPickerIconRef} style={{ marginRight: 5 }} onClick={() => setShowEmojiPicker(prevState => !prevState)}><FontAwesomeIcon icon={hovered ? faFaceLaughBeam : faFaceSmile} size='lg' style={{ color: 'white' }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} /></div>
+                    {selectedFiles.length === 0 && <div className='more-input' onClick={() => inputFileRef.current.click()}><FontAwesomeIcon icon={faPaperclip} size='lg' style={{ color: '#4FCD94' }} className='attachement' /></div>}
+                    <div className='more-input' ref={emojiPickerIconRef} style={{ marginRight: 5 }} onClick={() => setShowEmojiPicker(prevState => !prevState)}><FontAwesomeIcon icon={hovered ? faFaceLaughBeam : faFaceSmile} size='lg' style={{ color: '#4FCD94' }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} /></div>
                     <div className='input-main'>
                         {selectedFiles.length > 0 && (
                             <div className="file-preview" style={{ display: 'flex' }}>
@@ -196,13 +255,13 @@ function ChatBox({ conversation }) {
                         <img src={modalUrl} />
                     </Modal>
 
-                    <Button className='button-send-chat' onClick={() => sendChat()} disabled={isLoading || (message.trim() === '' && selectedFiles.length === 0) || conversation.chatStatus === 1 ? true : false}>
+                    <button className='button-send-chat' onClick={() => sendChat()} disabled={isLoading || (message.trim() === '' && selectedFiles.length === 0) || conversation.chatStatus === 1 ? true : false}>
                         {isLoading ?
                             <FontAwesomeIcon icon={faSpinner} size='xl' />
                             :
                             <FontAwesomeIcon icon={faPaperPlane} size='xl' />
                         }
-                    </Button>
+                    </button>
                 </div >
             </div>
         )

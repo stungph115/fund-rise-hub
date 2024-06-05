@@ -21,3 +21,9 @@
 .error-text {
   color: red;
 }
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
