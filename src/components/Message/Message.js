@@ -17,6 +17,7 @@ import { fr } from 'date-fns/locale'
 
 setDefaultOptions({ locale: fr })
 function Message() {
+
     const navigate = useNavigate()
 
     const [selectedItem, setSelectedItem] = useState(null)
@@ -57,8 +58,25 @@ function Message() {
         }).catch((err) => {
             console.log(err)
         })
-    }
 
+    }
+    //id from params
+    //toggle chat id
+    const [searchParams, setSearchParams] = useSearchParams()
+    const idConversation = parseInt(searchParams.get('id'))
+
+    useEffect(() => {
+        if (conversations.length > 0) {
+            const conversationMatched = conversations.find(obj => obj.id === idConversation)
+            if (conversationMatched) {
+                setConversation(conversationMatched)
+                setSelectedItem(idConversation)
+            }
+        }
+
+    }, [conversations])
+
+    //formating
     function isPhoto(fileName) {
         const photoExtensions = ['bmp', 'jpg', 'jpeg', 'gif', 'png']
         const extension = fileName.split('.').pop().toLowerCase()
@@ -141,6 +159,9 @@ function Message() {
     console.log('mergedData: ', mergedData)
 
     const handleItemClick = (item, index) => {
+        const searchParams = new URLSearchParams(location.search)
+        searchParams.set("id", index)
+        navigate(`${location.pathname}?${searchParams.toString()}`)
         setSelectedItem(index)
         setConversation(item)
     }
@@ -163,14 +184,26 @@ function Message() {
                     </div>
                     <div className='inbox-list-conversations'>
                         {
-                            mergedData.map((item) => {
+                            mergedData.filter(item => {
+                                // Filtering based on message content or other user's name/firstname
+                                const otherUser = item.participants.find(participant => participant.id !== user.id)
+                                const otherUserName = `${otherUser.firstname} ${otherUser.lastname}`.toLowerCase()
+                                const searchTerm = searchName.toLowerCase()
+
+                                const nameMatches = otherUserName.includes(searchTerm)
+                                const messageMatches = item.mergeMessageAndFiles.some(message =>
+                                    message.content && message.content.toLowerCase().includes(searchTerm)
+                                )
+
+                                return nameMatches || messageMatches
+                            }).map((item) => {
                                 const isSelected = selectedItem === item.id
                                 const hasMessagesOrFiles = item.mergeMessageAndFiles.length > 0
                                 //counting matched message to search
                                 let matchingMessageCount = 0
                                 if (searchName !== '') {
                                     matchingMessageCount = item.mergeMessageAndFiles.reduce((count, message) => {
-                                        if (message.message && message.message.toLowerCase().includes(searchName.toLowerCase())) {
+                                        if (message.content && message.content.toLowerCase().includes(searchName.toLowerCase())) {
 
                                             count++
                                         }

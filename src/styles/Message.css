@@ -1,6 +1,6 @@
 .inbox-wrapper {
     display: flex;
-    height: 90vh;
+    height: 85vh;
     margin: 20px;
     width: 80vw;
     background-color: white;
@@ -104,6 +104,8 @@
     margin-left: 10px;
 }
 
-.matching-message-count {}
+.matching-message-count {
+    color: #4FCD94;
+}
 
 .inbox-chatbox {}
