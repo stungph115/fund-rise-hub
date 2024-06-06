@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Image } from 'react-bootstrap'
+import { Badge, Image } from 'react-bootstrap'
 import '../../styles/Header.css'
 import logo from '../../assets/logo.png'
 import axios from 'axios'
@@ -14,7 +14,7 @@ import HeaderSearch from './HeaderSearch'
 
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
-
+    const [unreadMessageCount, setUnreadMessageCount] = useState(0)
     const menuRef = useRef(null)
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen); // Toggle the menu directly
@@ -69,7 +69,7 @@ function Header() {
         }
     }, [currentUser.id])
 
-    //socket
+    //socket user
     useEffect(() => {
         socket.on('user_updated_' + currentUser.id, () => {
             getUserInfo(currentUser.id)
@@ -91,8 +91,75 @@ function Header() {
                 console.log(err)
             })
     }
+    // get number total of unread chat
+    useEffect(() => {
+        if (currentUser.id) {
+            getCountUnreadChatMessage()
+
+        }
+    }, [currentUser])
+    function getCountUnreadChatMessage() {
+        if (currentUser.id) {
+            axios.post(env.URL + 'conversation/count-message-unread', { userId: currentUser.id }).then((res) => {
+                if (res.data && res.data.message) {
+                    setUnreadMessageCount(res.data.message)
+                } else {
+                    setUnreadMessageCount(0)
+                }
+            }).catch((error) => {
+                console.error(error.toJSON())
+            })
+        }
+
+    }
 
     const headerLogoOnlyRoutes = ['/sign-in', '/sign-up', '/forget-password']
+    //sockets
+    useEffect(() => {
+        socket.on('new_message_' + currentUser.id, () => {
+            getCountUnreadChatMessage()
+        })
+        return () => {
+            socket.off('new_message_' + currentUser.id)
+        }
+    }, [currentUser])
+    useEffect(() => {
+        socket.on('new_file_' + currentUser.id, () => {
+            getCountUnreadChatMessage()
+        })
+        return () => {
+            socket.off('new_file_' + currentUser.id)
+        }
+    }, [currentUser])
+    useEffect(() => {
+        socket.on('file_read_updated_' + currentUser.id, () => {
+            getCountUnreadChatMessage()
+        })
+        return () => {
+            socket.off('file_read_updated_' + currentUser.id)
+        }
+    }, [currentUser])
+    useEffect(() => {
+        socket.on('message_read_updated_' + currentUser.id, () => {
+            getCountUnreadChatMessage()
+        })
+        return () => {
+            socket.off('message_read_updated_' + currentUser.id)
+        }
+    }, [currentUser])
+    //notification
+    useEffect(() => {
+        socket.on("new_notification_" + currentUser.id, (notificationSave) => {
+            if (notificationSave) {
+                getCountUnreadChatMessage()
+            }
+        })
+        return () => {
+            socket.off("new_notification_" + currentUser.id)
+        }
+    }, [currentUser])
+
+
 
     if (headerLogoOnlyRoutes.includes(currentRoute) || /^\/reset-password\/.*/.test(currentRoute)) {
         return (
@@ -121,6 +188,13 @@ function Header() {
                                         className='header-user-photo'
                                         onClick={toggleMenu}
                                     />
+                                    {unreadMessageCount > 0 && (
+                                        <h5>
+                                            <Badge pill bg="danger" style={{ position: 'relative', top: '-10px', left: '-15px', color: 'white' }}>
+                                                {unreadMessageCount > 99 ? '99+' : unreadMessageCount}
+                                            </Badge>
+                                        </h5>
+                                    )}
 
                                 </>
 
@@ -176,7 +250,7 @@ function Header() {
                     <Fade top ref={menuRef} >
 
                         <div className="menu-block-header">
-                            <HeaderUserPanel currentUser={currentUser} toggleMenu={toggleMenu} />
+                            <HeaderUserPanel currentUser={currentUser} toggleMenu={toggleMenu} unreadMessageCount={unreadMessageCount} />
                         </div>
                     </Fade>
                 )}

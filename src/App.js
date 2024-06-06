@@ -17,15 +17,34 @@ import axiosConfig from './utils/axiosConfig';
 import { loadStripe } from '@stripe/stripe-js'
 import { Elements } from '@stripe/react-stripe-js'
 import { useAxiosInterceptor } from './axiosInterceptor'
+import { socket } from './utils/socket'
 
 const stripePromise = loadStripe(env.PUBLIC_KEY_STRIPE)
 
 function App() {
+  //current user
+  const user = useSelector((state) => state.userReducer)
+
   useAxiosInterceptor()
   const navigate = useNavigate()
   // get tokenJWT from store
   const tokenJWTStore = useSelector((state) => state.userReducer.tokenJWT)
   setAuthToken(tokenJWTStore)
+
+  useEffect(() => {
+    if (user.id && tokenJWTStore) {
+      axios.post(env.URL + "user/verifSignIn", {
+        tokenJWT: tokenJWTStore
+      }).then((res) => {
+        if (res.data === "TOKENJWT_VERIFIED") {
+          socket.emit("user-connect", user.id)
+        }
+      }).catch((error) => {
+        console.log("error :\n" + JSON.stringify(error) + "\n\n")
+      })
+    }
+  }, [user.id])
+
   return (
     <div className="App">
       <Header />

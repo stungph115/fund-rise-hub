@@ -18,6 +18,8 @@ import AvatarEditor from 'react-avatar-editor';
 import { toast } from 'react-toastify';
 import InputPassword from '../Input/InputPassword';
 import sha512 from 'js-sha512'
+import { socket } from '../../utils/socket';
+import StatusDotOnline from '../StatusDot/StatusDotOnline';
 
 function Profile() {
 
@@ -27,12 +29,37 @@ function Profile() {
     const navigate = useNavigate()
 
     const [user, setUser] = useState(null)
+    const [userStatus, setUserStatus] = useState(false)
     const [currentUserInfo, setCurrentUserInfo] = useState(null)
     console.log(currentUserInfo)
     const idUser = useParams().userId
     useEffect(() => {
         getUserInfo(idUser)
+        getStatusUser()
     }, [idUser])
+    function getStatusUser() {
+        axios.get(env.URL + 'user/status/' + idUser).then((res) => {
+            if (res.data && res.data.active) {
+                setUserStatus(res.data.active)
+            } else {
+                setUserStatus(false)
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    //socket user status
+    useEffect(() => {
+        socket.on('user-status', () => {
+            if (idUser) {
+                getStatusUser()
+            }
+        })
+        return () => {
+            socket.off('user-status')
+        }
+    }, [idUser])
+
     const currentUser = useSelector((state) => state.userReducer)
     const [isMyProfile, setIsMyProfile] = useState(false)
     const [showForms, setShowForms] = useState(false)
@@ -282,6 +309,9 @@ function Profile() {
                                         className="profile-user-photo"
                                         style={{ cursor: isMyProfile ? 'pointer' : "default" }}
                                     />
+                                    {userStatus &&
+                                        <div className='status-dot-online' style={{ transform: 'scale(3)', left: 170, bottom: 30 }}><StatusDotOnline /></div>
+                                    }
                                 </label>
                                     :
                                     <AvatarEditor

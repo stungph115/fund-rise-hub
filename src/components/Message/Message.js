@@ -14,10 +14,10 @@ import avatarDefault from '../../assets/default-avata.jpg'
 
 import { formatDistanceToNow, setDefaultOptions } from 'date-fns'
 import { fr } from 'date-fns/locale'
+import StatusDotOnline from '../StatusDot/StatusDotOnline'
 
 setDefaultOptions({ locale: fr })
 function Message() {
-
     const navigate = useNavigate()
 
     const [selectedItem, setSelectedItem] = useState(null)
@@ -34,7 +34,6 @@ function Message() {
             clearInterval(interval)
         }
     }, [])
-
     //current user
     const user = useSelector((state) => state.userReducer)
 
@@ -44,6 +43,7 @@ function Message() {
     useEffect(() => {
         getConversations()
     }, [])
+
     //update conversation after conversations changed
     useEffect(() => {
         if (conversation && conversation.length !== 0) {
@@ -58,6 +58,35 @@ function Message() {
             console.log(err)
         })
 
+    }
+    //fetch status online users
+    const [userStatus, setUserStatus] = useState({}) // Store user status here
+
+    useEffect(() => {
+        if (conversations.length > 0) {
+            fetchAllUserStatuses()
+        }
+    }, [conversations])
+    const fetchUserStatus = (userId) => {
+        return axios.get(`${env.URL}user/status/${userId}`)
+            .then((res) => {
+                return res.data.active
+            })
+            .catch((err) => {
+                console.log(`Error fetching status for user ${userId}:`, err)
+                return false
+            })
+    }
+
+    const fetchAllUserStatuses = async () => {
+        const statusPromises = conversations.flatMap(conversation =>
+            conversation.participants
+                .filter(participant => participant.id !== currentUser.id)
+                .map(participant => fetchUserStatus(participant.id).then(status => ({ [participant.id]: status })))
+        )
+        const statuses = await Promise.all(statusPromises)
+        const statusMap = statuses.reduce((acc, status) => ({ ...acc, ...status }), {})
+        setUserStatus(statusMap)
     }
     //id from params
     //toggle chat id
@@ -134,6 +163,17 @@ function Message() {
             socket.off("new_notification_" + user.id)
         }
     }, [user])
+    //user status
+    useEffect(() => {
+        socket.on('user-status', () => {
+            if (conversations.length > 0) {
+                fetchAllUserStatuses()
+            }
+        })
+        return () => {
+            socket.off('user-status')
+        }
+    }, [user, conversations])
 
     // merge files and messages
     let mergedData = conversations.map(obj => ({
@@ -193,7 +233,6 @@ function Message() {
                                 const otherUser = item.participants.find(participant => participant.id !== user.id)
                                 const otherUserName = `${otherUser.firstname} ${otherUser.lastname}`.toLowerCase()
                                 const searchTerm = searchName.toLowerCase()
-
                                 const nameMatches = otherUserName.includes(searchTerm)
                                 const messageMatches = item.mergeMessageAndFiles.some(message =>
                                     message.content && message.content.toLowerCase().includes(searchTerm)
@@ -218,6 +257,8 @@ function Message() {
                                 const filteredData = item.mergeMessageAndFiles.filter(obj => obj.read === 0 && obj.user.id !== user.id)
                                 const countUnreadMessage = filteredData.length
                                 const otherUser = item.participants.filter(participant => participant.id !== user.id)[0]
+                                const isOnline = userStatus[otherUser.id]
+
                                 return (
                                     <div
                                         className={`${isSelected ? "chat-box--list-chat-selected-item" : "chat-box--list-chat"}`}
@@ -232,10 +273,14 @@ function Message() {
                                                     <Image src={otherUser && otherUser.photo ? env.URL + 'file/' + otherUser.photo : avatarDefault}
                                                         roundedCircle
                                                         className='profile-user-photo-small'
+                                                        style={{ position: 'relative' }}
                                                     />
+                                                    {isOnline &&
+                                                        <div className='status-dot-online'><StatusDotOnline /></div>
+                                                    }
                                                 </div>
                                                 <div className="chat-box--list-title">
-                                                    {otherUser.firstname} {otherUser.lastname}
+                                                    {otherUser.firstname} {otherUser.lastname} {/* {isOnline ? ' (Online)' : ' (Offline)'} */}
                                                 </div>
                                                 {countUnreadMessage > 0 && (
                                                     <Badge

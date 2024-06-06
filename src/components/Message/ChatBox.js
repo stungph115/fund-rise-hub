@@ -1,6 +1,6 @@
-import { faCircleXmark, faEye, faFaceLaughBeam, faFaceSmile, faFileCirclePlus, faFileLines, faInfo, faInfoCircle, faPaperPlane, faPaperclip, faSpinner, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
+import { faCircleXmark, faEye, faFaceLaughBeam, faFaceSmile, faFileCirclePlus, faFileLines, faInfo, faInfoCircle, faPaperPlane, faPaperclip, faSpinner, faTriangleExclamation, faCircle } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Button, Image, Modal, OverlayTrigger, Tooltip } from "react-bootstrap"
+import { Badge, Button, Image, Modal, OverlayTrigger, Tooltip } from "react-bootstrap"
 import { useSelector } from "react-redux"
 import { env } from "../../env"
 import avatarDefault from '../../assets/default-avata.jpg'
@@ -14,9 +14,11 @@ import FileSize from "./FileSizConverter"
 import CustomNotification from "../Alert/CustomNotification"
 import axios from "axios"
 import { Buffer } from 'buffer'
+import StatusDotOnline from "../StatusDot/StatusDotOnline"
+import StatusDotOffline from "../StatusDot/StatusDotOfline"
+import { socket } from "../../utils/socket"
 
 function ChatBox({ conversation }) {
-    console.log(conversation)
     if (!conversation) {
         const containerStyle = {
             display: 'flex',
@@ -333,7 +335,34 @@ function ChatBox({ conversation }) {
     //render null
 
     const otherUser = conversation.participants.filter(participant => participant.id !== user.id)[0]
+    const [otherUserOnline, setOtherUserStatusOnline] = useState(false)
+    useEffect(() => {
+        getStatusUser()
+    }, [conversation])
+    //socket user status
+    useEffect(() => {
+        socket.on('user-status', () => {
+            if (conversation) {
+                getStatusUser()
+            }
+        })
+        return () => {
+            socket.off('user-status')
+        }
+    }, [otherUser, conversation])
 
+    function getStatusUser() {
+        console.log("getstatus")
+        axios.get(env.URL + 'user/status/' + otherUser.id).then((res) => {
+            if (res.data && res.data.active) {
+                setOtherUserStatusOnline(res.data.active)
+            } else {
+                setOtherUserStatusOnline(false)
+            }
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
     return (
         <div className="inbox-chatbox">
             {/* chat header(avatar and name and button info)  */}
@@ -348,7 +377,12 @@ function ChatBox({ conversation }) {
                     </div>
                     <div>
                         <div style={{ fontWeight: 600, fontSize: 22 }}>{otherUser.firstname} {otherUser.lastname}</div>
-                        <div>hors ligne</div>
+                        {otherUserOnline ?
+                            <div style={{ display: 'flex', alignItems: 'center' }}>en ligne <div style={{ marginLeft: 5 }} /> <StatusDotOnline /></div>
+                            :
+                            <div style={{ display: 'flex', alignItems: 'center' }}>hors ligne <div style={{ marginLeft: 5 }} /> <StatusDotOffline /></div>
+                        }
+
                     </div>
                 </div>
                 {/* setting */}

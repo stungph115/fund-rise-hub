@@ -3,7 +3,7 @@ import { useNavigation } from './hooks'
 import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify'
 import { removeStoreUser } from './store/actions/userAction';
-/* import socket from './socket'; */
+import { socket } from './utils/socket';
 
 export function useAxiosInterceptor() {
     const navigate = useNavigation()
@@ -16,7 +16,7 @@ export function useAxiosInterceptor() {
                 navigate('/403')
             }
             if (error.response && error.response.status === 401) {
-                /* socket.emit("remove-socket") */
+                socket.emit("remove-socket")
                 dispatch(removeStoreUser())
                 toast.warn("Il semble que votre session a expiré, veuillez vous reconnecter", { autoClose: 5000, toastId: 'unauthorized' })
                 if (window.location.pathname == '/') {

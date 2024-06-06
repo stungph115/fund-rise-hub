@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Image } from 'react-bootstrap';
+import { Badge, Image } from 'react-bootstrap';
 import { removeStoreUser } from '../../store/actions/userAction'
 import { useNavigate } from 'react-router';
 import { useDispatch } from 'react-redux';
@@ -10,7 +10,7 @@ import { faBell, faCreditCard, faEnvelope, faHeart, faUser } from '@fortawesome/
 import { faBriefcase, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import setAuthToken from '../../utils/axiosConfig';
 import { toast } from 'react-toastify';
-function HeaderUserPanel({ currentUser, toggleMenu }) {
+function HeaderUserPanel({ currentUser, toggleMenu, unreadMessageCount }) {
     const navigate = useNavigate()
 
     //logout
@@ -18,7 +18,7 @@ function HeaderUserPanel({ currentUser, toggleMenu }) {
     const removeInfoUser = () => dispatch(removeStoreUser())
     const logout = () => {
         toggleMenu()
-        axios.post(env.URL + 'user/signOut').then(response => {
+        axios.post(env.URL + 'user/signOut', { userId: currentUser.id }).then(response => {
             removeInfoUser()
             setAuthToken(null)
             navigate('/')
@@ -48,11 +48,17 @@ function HeaderUserPanel({ currentUser, toggleMenu }) {
                         <FontAwesomeIcon size='lg' icon={faBell} className='menu-header-icon' />Notifications
 
                     </div>
-                    <div className='menu-header-item' onClick={() => {
+                    <div className='menu-header-item' style={{ display: 'flex', alignItems: "center" }} onClick={() => {
                         navigate('/message')
                         toggleMenu()
                     }}>
                         <FontAwesomeIcon size='lg' icon={faEnvelope} className='menu-header-icon' />Messages
+                        {unreadMessageCount > 0 && (
+                            <Badge pill bg="danger" style={{ color: 'white', marginLeft: 5 }}>
+                                {unreadMessageCount > 99 ? '99+' : unreadMessageCount}
+                            </Badge>
+                        )}
+
                     </div>
                 </div>
                 <div>
