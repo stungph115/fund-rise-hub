@@ -347,6 +347,179 @@
 }
 
 /* chatbox body */
+
+.message {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.message-creator {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.message-content {
+    background-color: #e9e9ea;
+    border-radius: 10px;
+    max-width: 520px;
+    padding-inline: 10px;
+}
+
+.message-content-error {
+    font-size: 18px;
+    opacity: 40%;
+    border-radius: 10px;
+    border: 1px solid gray;
+    max-width: 520px;
+    padding-inline: 10px;
+    font-weight: 500;
+}
+
+.message-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.message-date {
+    font-size: 14px;
+    color: #888;
+    margin-top: 5px;
+}
+
+/* .message-content img {
+    max-width: 50vw;
+    margin: 20px;
+    background-color: white;
+} */
+.message-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    padding: 10px;
+    background-color: white;
+    background-clip: content-box;
+}
+
+.message-content-photo {
+    max-width: 50%;
+    border-radius: 25px;
+}
+
+.message-bottom {
+    font-size: 16px;
+    color: #888;
+    margin-top: 5px;
+    align-self: center;
+}
+
+/* current-user */
+.current-user .message-content {
+    background-color: #4FCD94;
+    color: white;
+    align-self: flex-end;
+}
+
+.current-user .message-content-error {
+    align-self: flex-end;
+}
+
+.current-user .message-date {
+    align-self: flex-end;
+}
+
+.current-user .message-creator {
+    align-self: flex-end;
+}
+
+.current-user .message-content-photo {
+    align-self: flex-end;
+}
+
+/* other-user */
+.other-user .message-date {
+    align-self: flex-start;
+}
+
+.other-user .message-creator {
+    align-self: flex-start;
+}
+
+.other-user .message-content {
+    background-color: #cfcfcf;
+    color: #000;
+    align-self: flex-start;
+}
+
+.other-user .message-content-error {
+    align-self: flex-start;
+}
+
+.other-user .message-content-photo {
+    align-self: flex-start;
+}
+
+.file-download-link {
+    text-decoration: none;
+    font-weight: 500;
+    /* Add any other styles you want for the file download link */
+}
+
+.current-user .file-download-link {
+    color: white;
+}
+
+.other-user .file-download-link {
+    color: #000;
+}
+
+/* tooltip-timestamp */
+
+.tooltip-timestamp.show {
+    opacity: 0.8 !important;
+}
+
+.tooltip-timestamp>div.tooltip-inner {
+    background-color: #464646 !important;
+}
+
+.tooltip-timestamp>div.tooltip-arrow {
+    display: none !important;
+}
+
+.highlighted-text {
+    background-color: yellow;
+    font-weight: bold;
+    color: #3a536c;
+}
+
+
+
 .inbox-chatbox-body {
     flex-grow: 1;
+    /*   height: 700px; */
+    overflow-y: auto;
+    padding: 50px;
+    /*    background-color: #fff; */
+}
+
+.inbox-chatbox-body::-webkit-scrollbar {
+    width: 10px;
+}
+
+.inbox-chatbox-body::-webkit-scrollbar-thumb {
+    background: #bababa;
+    /* Color of the thumb */
+    border-radius: 4px;
+    box-shadow: inset 0 0 4px rgb(0, 0, 0, 0.3);
+}
+
+.inbox-chatbox-body::-webkit-scrollbar-track {
+    background: #ffffff;
+    /* Color of the track */
+    /* Rounded track */
+    box-shadow: inset 0 0 3px rgb(0, 0, 0, 0.5);
 }
