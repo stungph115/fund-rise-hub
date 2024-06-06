@@ -351,7 +351,7 @@
 .message {
     display: flex;
     flex-direction: column;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
 }
 
 .message-creator {
@@ -366,6 +366,7 @@
     max-width: 520px;
     padding-inline: 10px;
 }
+
 
 .message-content-error {
     font-size: 18px;
@@ -421,6 +422,15 @@
     background-color: #4FCD94;
     color: white;
     align-self: flex-end;
+}
+
+.current-user .message-content.only-emoji {
+    background-color: transparent;
+}
+
+.only-emoji {
+    font-size: 240px;
+    /* Adjust the font size as needed */
 }
 
 .current-user .message-content-error {

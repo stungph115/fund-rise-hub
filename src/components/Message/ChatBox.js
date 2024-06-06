@@ -16,6 +16,7 @@ import axios from "axios"
 import { Buffer } from 'buffer'
 
 function ChatBox({ conversation }) {
+    console.log(conversation)
     if (!conversation) {
         const containerStyle = {
             display: 'flex',
@@ -35,7 +36,6 @@ function ChatBox({ conversation }) {
     const navigate = useNavigate()
     //current user
     const user = useSelector((state) => state.userReducer)
-    console.log(conversation)
     //chat footer
     const [showEmojiPicker, setShowEmojiPicker] = useState(false)
     const [selectedFiles, setSelectedFiles] = useState([])
@@ -223,6 +223,35 @@ function ChatBox({ conversation }) {
             })
         }
     }
+    //set read
+    useEffect(() => {
+        setReadStatus()
+    }, [conversation])
+
+    function setReadStatus() {
+        mergedData.forEach((item) => {
+            if (item.user.id !== user.id) {
+                if (item.name && item.read === 0) {
+                    axios.patch(env.URL + "file-chat/" + item.id).then((response) => {
+                        if (response.data.message === 'FILE_READ_UPDATED') {
+                            console.log("file readUpdated")
+                        }
+                    }).catch((error) => {
+                        console.log("error :\n" + JSON.stringify(error) + "\n\n")
+
+                    })
+                } else if (item.content && item.read === 0) {
+                    axios.patch(env.URL + "message/" + item.id).then((response) => {
+                        if (response.data.message === 'MESSAGE_READ_UPDATED') {
+                            console.log("message readUpdated")
+                        }
+                    }).catch((error) => {
+                        console.log("error :\n" + JSON.stringify(error) + "\n\n")
+                    })
+                }
+            }
+        })
+    }
 
     //check the lastest read message
 
@@ -333,14 +362,14 @@ function ChatBox({ conversation }) {
                 {mergedData.map((item, index) => {
                     const previousMessage = mergedData[index - 1]
                     const showTimestamp = shouldShowTimestamp(previousMessage, item)
-                    console.log('here', item)
+                    const containsOnlyEmoji = /^[\uD800-\uDBFF][\uDC00-\uDFFF]+$/g.test(item.content)
                     return (
                         <div
                             key={index}
                             className={`message ${(item.user.email === user.email ? 'current-user' : 'other-user')}`}
                         >
                             {showTimestamp && (
-                                <div className="message-date-timestamp" style={{ marginBottom: 10, textAlign: "center" }}>
+                                <div className="message-date-timestamp" style={{ marginBottom: 10, textAlign: "center", fontSize: 14, color: "#888" }}>
                                     {formatTimestamp(item.createdAt)}
                                 </div>
                             )}
@@ -357,7 +386,13 @@ function ChatBox({ conversation }) {
                                                     </Tooltip>
                                                 }
                                             >
-                                                <div className="message-content" dangerouslySetInnerHTML={{ __html: item.content }} style={{ fontSize: 18, padding: 5, paddingInline: 15, borderRadius: 25 }} />
+                                                {containsOnlyEmoji ?
+                                                    <div className={`message-content only-emoji`} style={{ fontSize: 50 }} >{item.content}</div>
+                                                    :
+                                                    <div className={`message-content`} dangerouslySetInnerHTML={{ __html: item.content }} style={{ fontSize: 18, padding: 5, paddingInline: 15, borderRadius: 25 }} />
+
+                                                }
+
                                             </OverlayTrigger>
                                             {(lastestReadMessage !== 0 && item.id === lastestReadMessage) ? <div className="message-date"><FontAwesomeIcon icon={faEye} /></div> : <></>}
                                         </>
@@ -382,6 +417,7 @@ function ChatBox({ conversation }) {
                                                                     e.target.style.display = 'none'; // Hide the image
                                                                     e.target.nextSibling.style.display = 'block'; // Show the "photo not found" message
                                                                 }}
+                                                                style={{ cursor: 'pointer' }}
                                                             />
                                                         </OverlayTrigger>
                                                     </>
@@ -396,7 +432,7 @@ function ChatBox({ conversation }) {
                                                                 </Tooltip>
                                                             }
                                                         >
-                                                            <div className="message-content" style={{ fontSize: 18, padding: 5, paddingInline: 15, borderRadius: 25, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                            <div className="message-content" style={{ fontSize: 18, padding: 5, paddingInline: 15, borderRadius: 25, display: 'flex', justifyContent: 'center', alignItems: 'center', cursor: 'pointer' }}>
                                                                 <div style={{ marginRight: 10 }}><FontAwesomeIcon icon={faFileLines} size="lg" /></div>
                                                                 <div>
                                                                     <a href={`${env.URL}file-chat/${item.name}`} className="file-download-link" target="_blank" rel="noopener noreferrer">
