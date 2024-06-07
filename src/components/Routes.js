@@ -10,6 +10,7 @@ import Profile from "./Profile/Profile";
 import Message from "./Message/Message";
 import Project from "./Project/Project";
 import Payment from "./Payment/Payment";
+import StartProject from "./StartProject/StartProject";
 
 export default function AppRoutes({ }) {
     return (
@@ -25,7 +26,7 @@ export default function AppRoutes({ }) {
             <Route path="/message" element={<Message />} />
             <Route path="/project/:projectId" element={<Project />} />
             <Route path="/payment" element={<Payment />} />
-
+            <Route path="/start" element={<StartProject />} />
             <Route path="*" element={<Navigate to="/not-found" />} />
         </Routes>
     )

@@ -10,7 +10,8 @@ import { faBell, faCreditCard, faEnvelope, faHeart, faUser } from '@fortawesome/
 import { faBriefcase, faRightFromBracket } from '@fortawesome/free-solid-svg-icons';
 import setAuthToken from '../../utils/axiosConfig';
 import { toast } from 'react-toastify';
-function HeaderUserPanel({ currentUser, toggleMenu, unreadMessageCount }) {
+import Notification from './Notification';
+function HeaderUserPanel({ currentUser, toggleMenu, unreadMessageCount, getCountUnreadNotificationHeader, countUnreadNotification }) {
     const navigate = useNavigate()
 
     //logout
@@ -44,10 +45,7 @@ function HeaderUserPanel({ currentUser, toggleMenu, unreadMessageCount }) {
                     }}>
                         <FontAwesomeIcon size='lg' icon={faUser} className='menu-header-icon' />Mon profil
                     </div>
-                    <div className='menu-header-item'>
-                        <FontAwesomeIcon size='lg' icon={faBell} className='menu-header-icon' />Notifications
-
-                    </div>
+                    <Notification countUnreadChatMessage={unreadMessageCount} getCountUnreadNotificationHeader={getCountUnreadNotificationHeader} countUnreadNotification={countUnreadNotification}/>
                     <div className='menu-header-item' style={{ display: 'flex', alignItems: "center" }} onClick={() => {
                         navigate('/message')
                         toggleMenu()

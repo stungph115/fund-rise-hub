@@ -13,16 +13,18 @@ import { faCreditCard } from '@fortawesome/free-regular-svg-icons';
 import InputName from '../Input/InputName';
 import InputEmail from '../Input/InputEmail';
 import InputPhone from '../Input/InputPhone';
-import { faAsterisk, faCamera, faCheck, faSpinner, faUserPen, faUserPlus, faX, faMessage, faUserMinus, faBan, } from '@fortawesome/free-solid-svg-icons';
+import { faAsterisk, faCamera, faSpinner, faUserPen, faUserPlus, faX, faMessage, faUserMinus, faBan, faComment, faUserXmark, faXmark, faCheckCircle, faXmarkCircle } from '@fortawesome/free-solid-svg-icons';
 import AvatarEditor from 'react-avatar-editor';
 import { toast } from 'react-toastify';
 import InputPassword from '../Input/InputPassword';
 import sha512 from 'js-sha512'
 import { socket } from '../../utils/socket';
 import StatusDotOnline from '../StatusDot/StatusDotOnline';
+import UnfollowAlert from './UnfollowAlert';
 
 function Profile() {
-
+    //unfollow alert modal
+    const [showUnfollowAlert, setShowUnfollowAlert] = useState(false)
     const [imageSrc, setImageSrc] = useState(null);
     const [editor, setEditor] = useState(null);
 
@@ -247,10 +249,10 @@ function Profile() {
             console.log(err)
         })
     }
-    function unfollowAnUser() {
+    function unfollowAnUser(followerId, followingId) {
         axios.post(env.URL + 'follow/unfollow', {
-            followerId: currentUser.id,
-            followingId: user.id
+            followerId: followerId,
+            followingId: followingId
         }).then((res) => {
             getUserInfo(idUser)
             getCurrentUserInfo()
@@ -263,8 +265,9 @@ function Profile() {
 
     //create conversation if not existe then go to message
     async function checkConversationExiste(userId) {
+        console.log(userId)
         if (currentUser.id && userId) {
-            axios.get(env.URL + `conversation/check/${currentUser.id}/${user.id}`).then((res) => {
+            axios.get(env.URL + `conversation/check/${currentUser.id}/${userId}`).then((res) => {
                 console.log(res.data.exists)
                 if (res.data.exists) {
                     navigate('/message?id=' + res.data.exists)
@@ -294,6 +297,15 @@ function Profile() {
             console.log(err)
         })
         setIsLoadingSendMessage(false)
+    }
+
+    //unfollow alert
+    const [userToUnfollow, setUserToUnfollow] = useState(null)
+    const [unfollowAlertText, setUnfollowAlertText] = useState("")
+    function onclickUnfollow(user, text) {
+        setUserToUnfollow(user)
+        setShowUnfollowAlert(true)
+        setUnfollowAlertText(text)
     }
     return (
         <>
@@ -339,8 +351,8 @@ function Profile() {
                                         Modifier photo profil <FontAwesomeIcon icon={faCamera} style={{ marginLeft: 5 }} />
                                     </div> :
                                     <div className='profile-form-buttons'>
-                                        <div style={{ color: "green", cursor: 'pointer' }} className='profile-forms-button' onClick={handleFileUpload} ><FontAwesomeIcon icon={faCheck} /></div>
-                                        <div style={{ color: "red", cursor: 'pointer' }} className='profile-forms-button' onClick={() => setImageSrc(null)}><FontAwesomeIcon icon={faX} /></div>
+                                        <div style={{ color: "green", cursor: 'pointer' }} className='profile-forms-button' onClick={handleFileUpload} ><FontAwesomeIcon icon={faCheckCircle} /></div>
+                                        <div style={{ color: "red", cursor: 'pointer' }} className='profile-forms-button' onClick={() => setImageSrc(null)}><FontAwesomeIcon icon={faXmarkCircle} /></div>
                                     </div>)
                                 }
 
@@ -369,12 +381,12 @@ function Profile() {
                                         {!isMyProfile &&
                                             <div style={{ display: 'flex'/* , justifyContent: 'space-between'  */ }}>
                                                 {isFollowed ?
-                                                    <div className='button-follow' onClick={() => unfollowAnUser()}>
-                                                        Désabonner <FontAwesomeIcon icon={faUserMinus} />
+                                                    <div className='button-follow' onClick={() => unfollowAnUser(currentUser.id, user.id)}>
+                                                        Se désabonner <FontAwesomeIcon icon={faUserMinus} />
                                                     </div>
                                                     :
                                                     <div className='button-follow' onClick={() => followAnUser()}>
-                                                        Abonner <FontAwesomeIcon icon={faUserPlus} />
+                                                        S'abonner <FontAwesomeIcon icon={faUserPlus} />
                                                     </div>
                                                 }
 
@@ -412,8 +424,8 @@ function Profile() {
                                             placeholder={"Numéro téléphone"}
                                         />
                                         <div className='profile-form-buttons'>
-                                            <div style={{ color: "green", cursor: 'pointer' }} className='profile-forms-button' onClick={() => updateUserInfo()}><FontAwesomeIcon icon={faCheck} /></div>
-                                            <div style={{ color: "red", cursor: 'pointer' }} className='profile-forms-button' onClick={() => setShowForms(false)}><FontAwesomeIcon icon={faX} /></div>
+                                            <div style={{ color: "green", cursor: 'pointer' }} className='profile-forms-button' onClick={() => updateUserInfo()}><FontAwesomeIcon icon={faCheckCircle} /></div>
+                                            <div style={{ color: "red", cursor: 'pointer' }} className='profile-forms-button' onClick={() => setShowForms(false)}><FontAwesomeIcon icon={faXmarkCircle} /></div>
                                         </div>
 
                                     </>
@@ -471,8 +483,8 @@ function Profile() {
                     </Modal>
                     {/* modal following list */}
                     <Modal size='sm' show={showFollowings} onHide={() => setShowFollowings(false)} centered>
-                        <Modal.Body className="d-flex justify-content-center align-items-center" >
-                            <div className='follower-list-scrollable'>
+                        <div style={{ padding: '10px 0px 10px 10px' }}>
+                            <div className='follower-list-scrollable' style={{ padding: 10 }}>
                                 {currentUserInfo && currentUserInfo.follower.map(item => (
                                     <div key={item.id} className='follower'>
                                         <Image
@@ -485,16 +497,19 @@ function Profile() {
                                             navigate("/profile/" + item.following.id)
                                             setShowFollowings(false)
                                         }}> {item.following.firstname} {item.following.lastname}</div>
-                                        <div className='follow-remove'><FontAwesomeIcon icon={faBan} /></div>
+                                        <div className='follow-message' onClick={() => checkConversationExiste(item.following.id)}><FontAwesomeIcon icon={faComment} /></div>
+                                        <div className='follow-remove' onClick={() => onclickUnfollow(item.following, 'Se désabonner')}><FontAwesomeIcon icon={faUserMinus} /></div>
+
                                     </div>
                                 ))}
                             </div>
-                        </Modal.Body>
+                        </div>
+
                     </Modal>
                     {/* modal follower list */}
                     <Modal size='sm' show={showFollowers} onHide={() => setShowFollowers(false)} centered>
-                        <Modal.Body className="d-flex justify-content-center align-items-center" >
-                            <div className='follower-list-scrollable'>
+                        <div style={{ padding: '10px 0px 10px 10px' }}>
+                            <div className='follower-list-scrollable' style={{ padding: 10 }}>
                                 {currentUserInfo && currentUserInfo.following.map(item => (
                                     <div key={item.id} className='follower'>
                                         <Image
@@ -506,11 +521,12 @@ function Profile() {
                                             navigate("/profile/" + item.follower.id)
                                             setShowFollowers(false)
                                         }}> {item.follower.firstname} {item.follower.lastname}</div>
-                                        <div className='follow-remove'><FontAwesomeIcon icon={faBan} /></div>
+                                        <div className='follow-message' onClick={() => checkConversationExiste(item.follower.id)}><FontAwesomeIcon icon={faComment} /></div>
+                                        <div className='follow-remove' onClick={() => onclickUnfollow(item.follower, 'Retirer')}><FontAwesomeIcon icon={faUserXmark} /></div>
                                     </div>
                                 ))}
                             </div>
-                        </Modal.Body>
+                        </div>
                     </Modal>
                     {/* modal new message */}
                     <Modal size='lg' show={showMessageInput} onHide={() => setShowMessageInput(false)} centered>
@@ -542,6 +558,7 @@ function Profile() {
 
                         </Modal.Body>
                     </Modal>
+                    <UnfollowAlert showUnfollowAlert={showUnfollowAlert} setShowUnfollowAlert={setShowUnfollowAlert} user={userToUnfollow} text={unfollowAlertText} unfollowAnUser={unfollowAnUser} />
                 </Fade >
 
             }

@@ -19,22 +19,6 @@ import StatusDotOffline from "../StatusDot/StatusDotOfline"
 import { socket } from "../../utils/socket"
 
 function ChatBox({ conversation }) {
-    if (!conversation) {
-        const containerStyle = {
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            color: '#3a536c',
-            fontWeight: 600,
-            fontSize: 32,
-            width: "100%"
-        };
-        return (
-            <div style={containerStyle}>
-                <div>Aucune conversation sélectionnée</div>
-            </div>
-        );
-    }
     const navigate = useNavigate()
     //current user
     const user = useSelector((state) => state.userReducer)

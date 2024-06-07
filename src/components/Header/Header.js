@@ -11,6 +11,8 @@ import HeaderUserPanel from './HeaderUserPanel'
 import avatarDefault from '../../assets/default-avata.jpg'
 import { socket } from '../../utils/socket'
 import HeaderSearch from './HeaderSearch'
+import { toast } from 'react-toastify'
+import DOMPurify from 'dompurify'
 
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -39,6 +41,8 @@ function Header() {
     }, [isMenuOpen]);
 
     const currentUser = useSelector((state) => state.userReducer)
+    const currentUserId = useSelector((state) => state.userReducer.id)
+
     const location = useLocation()
     const navigate = useNavigate()
     const currentRoute = location.pathname
@@ -46,6 +50,104 @@ function Header() {
     const [hoveredCategory, setHoveredCategory] = useState(null)
     const [isHovering, setIsHovering] = useState(false)
 
+    //count unread notification
+    const [countUnreadNotification, setCountUnreadNotification] = useState(0)
+    useEffect(() => {
+        getCountUnreadNotification()
+    }, [])
+    function getCountUnreadNotification() {
+        axios.get(env.URL + 'notification/count-unread/' + currentUserId).then((response) => {
+            setCountUnreadNotification(response.data.numberUnreadNotification)
+        }).catch((error) => {
+            console.error(error)
+        })
+    }
+    function onClickNotification(notification) {
+        if (notification.read === 0) {
+            setReadNotification(notification.id, 1)
+        }
+        navigate(notification.path)
+    }
+    function setReadNotification(notificationId, read) {
+        axios.patch(env.URL + 'notification/' + notificationId + '/' + read).then((response => {
+            if (response.data.message === 'NOTIFICATION_READ_UPDATED') {
+                getCountUnreadNotification()
+            }
+        })).catch((error) => {
+            console.log("error :\n" + JSON.stringify(error) + "\n\n")
+        })
+    }
+    //socket notification
+    useEffect(() => {
+        socket.on("new_notification_" + currentUserId, (notificationSave) => {
+            if (notificationSave) {
+                getCountUnreadNotification()
+                toast.info(
+                    <>
+                        <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(notificationSave.content) }} />
+                        {notificationSave.path && <div className='pop-notif-link' onClick={() => onClickNotification(notificationSave)}>Cliquez ici pour voir</div>}
+                    </>,
+                    {
+                        position: "top-left",
+                        autoClose: false,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "light",
+                    }
+                )
+            }
+        })
+        return () => {
+            socket.off("new_notification_" + currentUserId)
+        }
+    }, [currentUserId])
+    useEffect(() => {
+        let intervalId
+        if (countUnreadNotification > 0 && unreadMessageCount === 0) {
+            intervalId = setInterval(() => {
+                document.title =
+                    document.title === 'Fund Rise Hub'
+                        ? countUnreadNotification > 1
+                            ? countUnreadNotification + ' nouvelles notifications'
+                            : 'Nouvelle notification'
+                        : 'Fund Rise Hub'
+            }, 1000)
+        } else if (countUnreadNotification === 0 && unreadMessageCount > 0) {
+            intervalId = setInterval(() => {
+                document.title =
+                    document.title === 'Fund Rise Hub'
+                        ? unreadMessageCount > 1
+                            ? unreadMessageCount + ' nouveaux messages'
+                            : 'Nouveau message'
+                        : 'Fund Rise Hub'
+            }, 1000)
+        } else if (countUnreadNotification > 0 && unreadMessageCount > 0) {
+            let flashingTitle = [
+                countUnreadNotification > 1
+                    ? countUnreadNotification + ' nouvelles notifications'
+                    : 'Nouvelle notification',
+                unreadMessageCount > 1
+                    ? unreadMessageCount + ' nouveaux messages'
+                    : 'Nouveau message',
+                'Fund Rise Hub'
+            ]
+            let flashingIndex = 0
+
+            intervalId = setInterval(() => {
+                document.title = flashingTitle[flashingIndex];
+                flashingIndex = (flashingIndex + 1) % flashingTitle.length
+            }, 1000)
+        }
+        else {
+            document.title = "Fund Rise Hub"
+        }
+        return () => {
+            clearInterval(intervalId)
+        }
+    }, [countUnreadNotification, unreadMessageCount])
     const [user, setUser] = useState(null)
     function getUserInfo(id) {
         axios
@@ -158,7 +260,7 @@ function Header() {
             socket.off("new_notification_" + currentUser.id)
         }
     }, [currentUser])
-
+    const totalCount = countUnreadNotification + unreadMessageCount
 
 
     if (headerLogoOnlyRoutes.includes(currentRoute) || /^\/reset-password\/.*/.test(currentRoute)) {
@@ -188,10 +290,10 @@ function Header() {
                                         className='header-user-photo'
                                         onClick={toggleMenu}
                                     />
-                                    {unreadMessageCount > 0 && (
+                                    {totalCount > 0 && (
                                         <h5>
                                             <Badge pill bg="danger" style={{ position: 'relative', top: '-10px', left: '-15px', color: 'white' }}>
-                                                {unreadMessageCount > 99 ? '99+' : unreadMessageCount}
+                                                {totalCount > 99 ? '99+' : totalCount}
                                             </Badge>
                                         </h5>
                                     )}
@@ -247,12 +349,13 @@ function Header() {
                     </Fade>
                 )}
                 {isMenuOpen && (
-                    <Fade top ref={menuRef} >
-
-                        <div className="menu-block-header">
-                            <HeaderUserPanel currentUser={currentUser} toggleMenu={toggleMenu} unreadMessageCount={unreadMessageCount} />
-                        </div>
-                    </Fade>
+                    <div ref={menuRef}>
+                        <Fade top>
+                            <div className="menu-block-header">
+                                <HeaderUserPanel currentUser={currentUser} toggleMenu={toggleMenu} unreadMessageCount={unreadMessageCount} getCountUnreadNotificationHeader={getCountUnreadNotification} countUnreadNotification={countUnreadNotification} />
+                            </div>
+                        </Fade>
+                    </div>
                 )}
             </div>
         )

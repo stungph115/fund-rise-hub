@@ -6,7 +6,7 @@
 .profile-user-photo {
     height: 210px;
     width: 210px;
-    transition: all 0.1s;
+    transition: all 0.5s;
 }
 
 .profile-user-photo-small {
@@ -18,6 +18,7 @@
 .profile-user-photo:hover {
     border: 5px #d8d8d8 dashed;
     padding: 5px;
+     transition: all 0.5s;
 }
 
 .profile-top {
@@ -154,15 +155,21 @@
     align-items: center;
 }
 
-.follow-remove {
+.follow-remove,
+.follow-message {
     margin-left: 20px;
     cursor: pointer;
-
+    color: #4d4d4d;
 }
 
 .follow-remove:hover {
 
-    color: red;
+    color: rgb(216, 0, 0);
+}
+
+.follow-message:hover {
+
+    color: #4FCD94;
 }
 
 .follower-name {
@@ -200,5 +207,4 @@
     /* Color of the track */
     border-radius: 4px;
     /* Rounded track */
-    box-shadow: inset 0 0 3px rgb(0, 0, 0, 0.3);
 }

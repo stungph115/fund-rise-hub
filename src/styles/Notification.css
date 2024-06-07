@@ -1,0 +1,331 @@
+.notification-container {
+    position: relative;
+    z-index: 3;
+    margin-right: 20px;
+}
+
+
+.notification-icon {
+    cursor: pointer;
+    width: 35px;
+
+}
+
+.notification-icon:active .notification-icon-container,
+.notification-icon:active .notification-icon-container-active {
+    transform: scale(1);
+    transition: all 0.2s;
+}
+
+.notifications-setting {
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: rgb(88, 88, 88);
+}
+
+.notifications-setting:active,
+.notifications-setting-active:active {
+    transform: scale(0.8);
+    transition: all 0.2s;
+}
+
+.notifications-setting-active {
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 50%;
+    height: 35px;
+    width: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    color: rgb(88, 88, 88);
+    background-color: rgba(128, 128, 128, 0.116);
+    transition: all 0.2s;
+}
+
+.notifications-setting:hover {
+    background-color: rgba(128, 128, 128, 0.116);
+    transition: all 0.2s;
+}
+
+.notifications-setting-dropdown {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: max-content;
+    padding: 5px;
+}
+
+
+.notifications-setting-dropdown-item {
+    padding: 5px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    border-radius: 5px
+}
+
+.notifications-setting-dropdown-item.disable {
+    color: rgb(168, 168, 168);
+    cursor: not-allowed;
+}
+
+.notifications-setting-dropdown-item:hover {
+    background-color: #c8c8c84b;
+}
+
+
+.filter-notification {
+    display: flex;
+    margin-left: 10px;
+    margin-bottom: 5px;
+}
+
+.button-filter {
+    padding: 5px 10px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    border-radius: 20px;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.button-filter:hover {
+    background-color: rgba(128, 128, 128, 0.116);
+    transition: all 0.2s;
+}
+
+.button-filter-active {
+    padding: 5px 10px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    color: #0866FF;
+    background-color: rgba(128, 169, 234, 0.17);
+    border-radius: 20px;
+    transition: all 0.2s;
+}
+
+.button-filter-active:hover {
+    background-color: rgba(128, 169, 234, 0.341);
+    transition: all 0.2s;
+}
+
+.notification-icon-container,
+.notification-text {
+
+    transition: all 0.1s;
+}
+
+.notification-icon-container-active,
+.notification-text-active {
+    font-weight: 500;
+    color: #4FCD94;
+    transition: all 0.1s;
+}
+
+
+
+.notification-dropdown {
+    position: absolute;
+    top: 50%;
+    right: 90%;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 360px;
+
+}
+
+.notification-list-scrollable {
+    min-height: 20vh;
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px 10px 10px 10px;
+    transition: --var1 0.5s, --var2 0.5s;
+    /* Add a custom property for the box-shadow transition */
+}
+
+@property --var1 {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: white;
+}
+
+@property --var2 {
+    syntax: "<shadow>";
+    inherits: true;
+    initial-value: inset 0 0 4px rgba(0, 0, 0, 0.5);
+}
+
+.notification-list-scrollable:hover {
+    --var1: #bababa;
+    --var2: inset 0 0 4px rgba(0, 0, 0, 0.5);
+    /* Change the box-shadow property */
+}
+
+.notification-list-scrollable::-webkit-scrollbar {
+    background: transparent;
+    width: 8px;
+    padding: 0;
+}
+
+.notification-list-scrollable::-webkit-scrollbar-thumb {
+    background: var(--var1);
+    box-shadow: var(--var2);
+    /* Use the custom property for box-shadow */
+    border-radius: 4px;
+}
+
+.notification-item {
+    /* position: relative; */
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 10px;
+}
+
+.notification-item:last-child {
+    margin-bottom: 50px;
+}
+
+.notification-item:not(:has(.notification-item-setting:hover)):hover {
+    background-color: #c8c8c84b;
+}
+
+.notification-item-content {
+    font-size: 16px;
+}
+
+.notification-item-content-read {
+    color: rgb(124, 124, 124);
+    font-size: 16px;
+}
+
+.notification-item-date {
+    color: #0866FF;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.notification-item-date-read {
+    color: rgb(124, 124, 124);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.notification-item-read {
+    color: #0866FF;
+    padding: 5px;
+}
+
+.notification-item-text {
+    width: 288px;
+}
+
+
+.notification-item-setting {
+    position: relative;
+    /* right: 50px; */
+    color: rgb(124, 124, 124);
+    border: 1px solid rgba(124, 124, 124, 0.383);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    transition: all 0.2s;
+
+}
+
+.notification-item-setting-active {
+    background-color: rgba(124, 124, 124, 0.119);
+    display: flex;
+    position: relative;
+    /*     right: 50px;
+ */
+    color: rgb(124, 124, 124);
+    border: 1px solid rgba(124, 124, 124, 0.383);
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 5px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height: 30px;
+    width: 30px;
+    transition: all 0.2s;
+}
+
+.notification-item:hover .notification-item-setting {
+    display: flex;
+    transition: all 0.2s;
+}
+
+.notification-item-setting:hover {
+    background-color: rgba(124, 124, 124, 0.119);
+    transition: all 0.2s;
+}
+
+.notif-item-setting-dropdown {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 220px;
+    width: max-content;
+    padding: 5px;
+    right: 0px;
+    top: 30px
+}
+
+.notif-item-setting-dropdown-item {
+    padding: 5px;
+    text-align: left;
+    cursor: pointer;
+    border-radius: 5px;
+    display: flex;
+    color: black;
+}
+
+.notif-item-setting-dropdown-item:hover {
+    background-color: #c8c8c84b;
+}
+
+.dropdown-setting-icon {
+    width: 20px;
+    margin-right: 5px;
+}
+
+.pop-notif-link {
+    cursor: pointer;
+    color: #0866FF;
+}
+
+.pop-notif-link:hover {
+    color: #458afa;
+    text-decoration: underline;
+}

@@ -5,7 +5,7 @@ import axios from 'axios'
 import { env } from '../../env'
 import { Badge, Form, Image, InputGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch, faX } from '@fortawesome/free-solid-svg-icons'
+import { faSearch, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { Fade } from 'react-reveal'
 import ChatBox from './ChatBox'
 import { useNavigate, useSearchParams } from 'react-router-dom'
@@ -15,6 +15,7 @@ import avatarDefault from '../../assets/default-avata.jpg'
 import { formatDistanceToNow, setDefaultOptions } from 'date-fns'
 import { fr } from 'date-fns/locale'
 import StatusDotOnline from '../StatusDot/StatusDotOnline'
+import NotSelectedChat from './NotSelectChat'
 
 setDefaultOptions({ locale: fr })
 function Message() {
@@ -221,7 +222,7 @@ function Message() {
                             />
                             <InputGroup.Text style={{ borderLeft: "none", borderRadius: '0px 25px  25px  0px ', backgroundColor: "#F0F2F5", width: 'fit-content' }}>
                                 <div className='search-chat-clear-filter' onClick={() => setSearchName('')}>
-                                    {searchName !== "" && <FontAwesomeIcon icon={faX} size='xs' />}
+                                    {searchName !== "" && <FontAwesomeIcon icon={faXmark} size='lg' />}
                                 </div>
                             </InputGroup.Text>
                         </InputGroup>
@@ -342,8 +343,12 @@ function Message() {
                         }
                     </div>
                 </div>
+                {conversation ?
+                    <ChatBox conversation={conversation} />
+                    :
+                    <NotSelectedChat />
+                }
 
-                <ChatBox conversation={conversation} />
             </div>
         </Fade>
 
