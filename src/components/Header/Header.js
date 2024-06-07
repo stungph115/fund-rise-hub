@@ -215,7 +215,7 @@ function Header() {
 
     }
 
-    const headerLogoOnlyRoutes = ['/sign-in', '/sign-up', '/forget-password']
+    const headerLogoOnlyRoutes = ['/sign-in', '/sign-up', '/forget-password', '/start']
     //sockets
     useEffect(() => {
         socket.on('new_message_' + currentUser.id, () => {
@@ -282,7 +282,7 @@ function Header() {
                     <HeaderSearch categories={categories} />
                     <Fade right>
                         <div className='header-right'>
-                            <div className='button-create-project'> Démarrer un projet</div>
+                            <div className='button-create-project' onClick={() => navigate("start")}> Démarrer un projet</div>
                             {currentUser.tokenJWT ?
                                 <>
                                     <Image src={user && user.photo ? env.URL + 'file/' + user.photo : avatarDefault}
