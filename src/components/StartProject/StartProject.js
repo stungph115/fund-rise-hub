@@ -354,12 +354,16 @@ const StartProject = ({ categories }) => {
                                         <div style={{ marginBottom: 20 }} />
                                         <Form.Group controlId="rewardPhoto">
                                             <Form.Label style={{ fontWeight: 500 }}>Photo</Form.Label>
-                                            <Dropzone onDrop={(acceptedFiles) => setRewardPhoto(acceptedFiles[0])}>
+                                            <Dropzone
+                                                onDrop={(acceptedFiles) => setRewardPhoto(acceptedFiles[0])}
+                                                accept={{ 'image/jpeg': [], 'image/png': [], 'image/gif': [], 'image/bmp': [], 'image/tiff': [] }}
+                                                maxFiles={1}
+                                            >
                                                 {({ getRootProps, getInputProps }) => (
                                                     <section className="container">
-                                                        <div {...getRootProps({ className: 'dropzone' })}>
+                                                        <div {...getRootProps({ className: 'dropzone' })} className='start-project-dropzone'>
                                                             <input {...getInputProps()} />
-                                                            <p>Drag 'n' drop some files here, or click to select files</p>
+                                                            <p>Glissez et déposez des photos ici, ou cliquez pour sélectionner des photos</p>
                                                         </div>
                                                     </section>
                                                 )}
