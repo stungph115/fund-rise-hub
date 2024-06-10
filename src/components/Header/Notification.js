@@ -64,7 +64,7 @@ function Notification({ getCountUnreadNotificationHeader, countUnreadNotificatio
         })
     }
     function setReadAllNotification() {
-        axios.post(env.URL + 'notification/all-read').then((response) => {
+        axios.post(env.URL + 'notification/all-read', { userId: currentUserId }).then((response) => {
             if (response.data.message === 'ALL_NOTIFICATIONS_MARKED_AS_READ') {
                 getNotification()
                 getCountUnreadNotificationHeader()

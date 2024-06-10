@@ -33,7 +33,6 @@ function Profile() {
     const [user, setUser] = useState(null)
     const [userStatus, setUserStatus] = useState(false)
     const [currentUserInfo, setCurrentUserInfo] = useState(null)
-    console.log(currentUserInfo)
     const idUser = useParams().userId
     useEffect(() => {
         getUserInfo(idUser)
@@ -265,10 +264,8 @@ function Profile() {
 
     //create conversation if not existe then go to message
     async function checkConversationExiste(userId) {
-        console.log(userId)
         if (currentUser.id && userId) {
             axios.get(env.URL + `conversation/check/${currentUser.id}/${userId}`).then((res) => {
-                console.log(res.data.exists)
                 if (res.data.exists) {
                     navigate('/message?id=' + res.data.exists)
                 } else {

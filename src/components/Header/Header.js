@@ -49,7 +49,6 @@ function Header() {
     const [categories, setCategories] = useState([])
     const [hoveredCategory, setHoveredCategory] = useState(null)
     const [isHovering, setIsHovering] = useState(false)
-
     //count unread notification
     const [countUnreadNotification, setCountUnreadNotification] = useState(0)
     useEffect(() => {
@@ -263,7 +262,7 @@ function Header() {
     const totalCount = countUnreadNotification + unreadMessageCount
 
 
-    if (headerLogoOnlyRoutes.includes(currentRoute) || /^\/reset-password\/.*/.test(currentRoute)) {
+    if (headerLogoOnlyRoutes.includes(currentRoute) || /^\/reset-password\/.*/.test(currentRoute) || /^\/project\/checkout\/.*/.test(currentRoute) || /^\/checkout\/.*/.test(currentRoute)) {
         return (
             <div className='header-container-logo-only' onClick={() => navigate("/")}>
                 <Image className='header-logo-only' src={logo} />

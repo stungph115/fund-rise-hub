@@ -336,7 +336,6 @@ function ChatBox({ conversation }) {
     }, [otherUser, conversation])
 
     function getStatusUser() {
-        console.log("getstatus")
         axios.get(env.URL + 'user/status/' + otherUser.id).then((res) => {
             if (res.data && res.data.active) {
                 setOtherUserStatusOnline(res.data.active)

@@ -5,7 +5,7 @@ import { Form, InputGroup } from "react-bootstrap";
 import colors from "../../styles/colors";
 const InputPassword = forwardRef((props, ref) => {
 
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\][{};':"|,.<>/?]).{8,}$/;
     const [showPassword, setShowPassword] = useState(false)
 
     useImperativeHandle(ref, () => ({

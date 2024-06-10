@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   height: 100vh;
+  font-family: Inter, sans-serif;
 }
 
 .app-body {
@@ -26,4 +27,11 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
+}
+
+.no-focus-border:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: green !important;
+  /* Set to default border color or your desired border color */
 }

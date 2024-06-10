@@ -28,7 +28,7 @@ function ResetPassword() {
         setHasUpperCase(/[A-Z]/.test(password))
         setHasLowerCase(/[a-z]/.test(password))
         setHasNumber(/\d/.test(password))
-        setHasSpecialChar(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password))
+        setHasSpecialChar(/[!@#$%^&*()_+=[\]{};':"|,.<>/?]/.test(password))
     }, [password])
 
     useEffect(() => {

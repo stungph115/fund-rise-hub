@@ -11,8 +11,10 @@ import Message from "./Message/Message";
 import Project from "./Project/Project";
 import Payment from "./Payment/Payment";
 import StartProject from "./StartProject/StartProject";
+import ProjectCheckOut from "./Project/ProjectCheckOut";
+import Checkout from "./Payment/Checkout";
 
-export default function AppRoutes({ }) {
+export default function AppRoutes({ categories }) {
     return (
         <Routes>
             <Route path='/' element={<Home />} />
@@ -25,8 +27,12 @@ export default function AppRoutes({ }) {
             <Route path="/profile/:userId" element={<Profile />} />
             <Route path="/message" element={<Message />} />
             <Route path="/project/:projectId" element={<Project />} />
+            <Route path="/project/checkout/:projectId" element={<ProjectCheckOut />} />
             <Route path="/payment" element={<Payment />} />
-            <Route path="/start" element={<StartProject />} />
+            <Route path="/start" element={<StartProject categories={categories} />} />
+            <Route path="/checkout/:idProject/:idReward/:amout" element={<Checkout />} />
+
+
             <Route path="*" element={<Navigate to="/not-found" />} />
         </Routes>
     )

@@ -10,7 +10,7 @@ import ZipCodeLocator from './components/Location/Location'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 import setAuthToken from './utils/axiosConfig'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { env } from './env'
 import axiosConfig from './utils/axiosConfig';
@@ -19,7 +19,6 @@ import { Elements } from '@stripe/react-stripe-js'
 import { useAxiosInterceptor } from './axiosInterceptor'
 import { socket } from './utils/socket'
 
-const stripePromise = loadStripe(env.PUBLIC_KEY_STRIPE)
 
 function App() {
   //current user
@@ -45,6 +44,24 @@ function App() {
     }
   }, [user.id])
 
+
+  const stripePromise = loadStripe(env.PUBLIC_KEY_STRIPE)
+  const [categories, setCategories] = useState([])
+  function getCategories() {
+    axios.get(env.URL + 'category')
+      .then((res) => {
+        if (res.data) {
+          setCategories(res.data)
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+  useEffect(() => {
+    getCategories()
+  }, [])
+
   return (
     <div className="App">
       <Header />
@@ -52,7 +69,7 @@ function App() {
         <ToastContainer position='top-left' theme='light' style={{ marginTop: "12vh" }}
         />
         <Elements stripe={stripePromise}>
-          <AppRoutes />
+          <AppRoutes categories={categories} />
         </Elements>
       </div>
       <Footer />
