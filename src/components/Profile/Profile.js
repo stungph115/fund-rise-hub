@@ -21,6 +21,10 @@ import sha512 from 'js-sha512'
 import { socket } from '../../utils/socket';
 import StatusDotOnline from '../StatusDot/StatusDotOnline';
 import UnfollowAlert from './UnfollowAlert';
+import ProjectCreated from './ProjectCreated';
+import ProjectBacked from './ProjectBacked';
+import RewardEarned from './RewardEarned';
+import SpinnerGreen from '../../utils/Spinner';
 
 function Profile() {
     //unfollow alert modal
@@ -34,6 +38,7 @@ function Profile() {
     const [userStatus, setUserStatus] = useState(false)
     const [currentUserInfo, setCurrentUserInfo] = useState(null)
     const idUser = useParams().userId
+    console.log(currentUserInfo)
     useEffect(() => {
         getUserInfo(idUser)
         getStatusUser()
@@ -306,7 +311,7 @@ function Profile() {
     }
     return (
         <>
-            {user &&
+            {user ?
                 <Fade right>
                     <div className="profile-wrapper">
                         <div className='profile-top'>
@@ -445,12 +450,24 @@ function Profile() {
                         </div>
                         <div className='profile-bottom'>
                             <div className='profile-bottom-switch'>
-                                <div className={switchValue === 1 ? 'profile-switch-button chosen' : 'profile-switch-button'} onClick={() => setSwitchValue(1)}>Projets créés (0) </div>
-                                <div className={switchValue === 2 ? 'profile-switch-button chosen' : 'profile-switch-button'} onClick={() => setSwitchValue(2)}>Projets soutenus (0) </div>
+                                <div className={switchValue === 1 ? 'profile-switch-button chosen' : 'profile-switch-button'} onClick={() => setSwitchValue(1)}>Projets créés ({currentUserInfo ? currentUserInfo.project.length : 0})  </div>
+                                <div className={switchValue === 2 ? 'profile-switch-button chosen' : 'profile-switch-button'} onClick={() => setSwitchValue(2)}>Projets soutenus ({currentUserInfo ? new Set(currentUserInfo.investments.map(investment => investment.project.id)).size : 0}) </div>
+                                <div className={switchValue === 3 ? 'profile-switch-button chosen' : 'profile-switch-button'} onClick={() => setSwitchValue(3)}>Récompenses gagnées ({currentUserInfo ? currentUserInfo.rewardEarned.length : 0}) </div>
                             </div>
-                            <div className='profile-bottom-content'>
-                                content
-                            </div>
+                            {currentUserInfo ?
+                                <div className='profile-bottom-content'>
+                                    {switchValue === 1 &&
+                                        <ProjectCreated projects={currentUserInfo ? currentUserInfo.project : []} />
+                                    }
+                                    {switchValue === 2 &&
+                                        <ProjectBacked investments={currentUserInfo ? currentUserInfo.investments : []} />
+                                    }
+                                    {switchValue === 3 &&
+                                        <RewardEarned rewards={currentUserInfo ? currentUserInfo.rewardEarned : []} />
+                                    }
+                                </div> : <SpinnerGreen />
+                            }
+
                         </div>
                     </div>
                     {/* modal change password */}
@@ -557,7 +574,8 @@ function Profile() {
                     </Modal>
                     <UnfollowAlert showUnfollowAlert={showUnfollowAlert} setShowUnfollowAlert={setShowUnfollowAlert} user={userToUnfollow} text={unfollowAlertText} unfollowAnUser={unfollowAnUser} />
                 </Fade >
-
+                :
+                <SpinnerGreen />
             }
         </>
     );

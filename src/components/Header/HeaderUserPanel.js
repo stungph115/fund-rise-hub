@@ -45,7 +45,7 @@ function HeaderUserPanel({ currentUser, toggleMenu, unreadMessageCount, getCount
                     }}>
                         <FontAwesomeIcon size='lg' icon={faUser} className='menu-header-icon' />Mon profil
                     </div>
-                    <Notification countUnreadChatMessage={unreadMessageCount} getCountUnreadNotificationHeader={getCountUnreadNotificationHeader} countUnreadNotification={countUnreadNotification}/>
+                    <Notification countUnreadChatMessage={unreadMessageCount} getCountUnreadNotificationHeader={getCountUnreadNotificationHeader} countUnreadNotification={countUnreadNotification} />
                     <div className='menu-header-item' style={{ display: 'flex', alignItems: "center" }} onClick={() => {
                         navigate('/message')
                         toggleMenu()
@@ -61,8 +61,11 @@ function HeaderUserPanel({ currentUser, toggleMenu, unreadMessageCount, getCount
                 </div>
                 <div>
 
-                    <div className='menu-header-item'>
-                        <FontAwesomeIcon size='lg' icon={faHeart} className='menu-header-icon' />Favorites
+                    <div className='menu-header-item' onClick={() => {
+                        navigate('/favorite')
+                        toggleMenu()
+                    }}>
+                        <FontAwesomeIcon size='lg' icon={faHeart} className='menu-header-icon' />Enregistré
                     </div>
                     <div className='menu-header-item' onClick={() => {
                         navigate('/payment')
@@ -70,7 +73,10 @@ function HeaderUserPanel({ currentUser, toggleMenu, unreadMessageCount, getCount
                     }}>
                         <FontAwesomeIcon size='lg' icon={faCreditCard} className='menu-header-icon' />Paiements
                     </div>
-                    <div className='menu-header-item'>
+                    <div className='menu-header-item' onClick={() => {
+                        navigate('/profile/' + currentUser.id)
+                        toggleMenu()
+                    }}>
                         <FontAwesomeIcon size='lg' icon={faBriefcase} className='menu-header-icon' />Mes projects
                     </div>
                 </div>

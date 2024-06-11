@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../../styles/Home.css';
 import { Fade } from 'react-reveal';
 import CountUp from 'react-countup';
+import { env } from '../../env';
 import { addSpacesToNumber, formatMontant } from '../../utils/utils';
 
 function Home() {
@@ -10,15 +12,24 @@ function Home() {
     const [fundedCount, setFundedCount] = useState(0);
     const [pledgeCount, setPledgeCount] = useState(0);
 
-    // Simulate data fetching or initialization
+    // Fetch data from API
     useEffect(() => {
-        setTimeout(() => {
-            setFundedProjectCount(258396);
-            setFundedCount(8000108341);
-            setPledgeCount(95017147);
-        }, 1000); // Simulating asynchronous data fetching
-    }, []);
 
+
+        fetchData()
+    }, [])
+    async function fetchData() {
+        try {
+            axios.post(env.URL + 'projects/stat').then((res) => {
+                setFundedProjectCount(res.data.fundedProjectCount);
+                setFundedCount(res.data.fundedCount);
+                setPledgeCount(res.data.pledgeCount);
+            })
+
+        } catch (error) {
+            console.error('Error fetching stats:', error);
+        }
+    }
     return (
         <Fade bottom>
             <div className='home-wrapper'>
@@ -37,7 +48,6 @@ function Home() {
                         </div>
                         <div className='home-stats-content'>
                             <div className='home-stats-number'><CountUp end={pledgeCount} duration={2} separator=" " /></div>
-
                             <div className='home-stats-text'>engagements</div>
                         </div>
                     </div>

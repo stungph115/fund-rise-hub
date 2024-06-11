@@ -1,7 +1,7 @@
-export const projectDummy = {
+export const projectDummy ={
     "id": 3,
-    "title": "Projet de test",
-    "descriptions": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a suscipit mauris. Cras blandit nisl vel purus gravida finibus nec non enim. Duis ultrices faucibus orci ac sollicitudin. Morbi fermentum lobortis velit eget lacinia.",
+    "title": "teaazf",
+    "descriptions": "teaazfteaazfteaazfteaazfteaazf",
     "goal": 5,
     "deadline": "2024-06-15T22:00:00.000Z",
     "status": "funding",
@@ -22,49 +22,7 @@ export const projectDummy = {
     "campaign": [
         {
             "id": 5,
-            "title": " Campaign 1",
-            "content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a suscipit mauris. Integer a egestas felis, quis lacinia lectus. Ut eleifend leo eu tempus lobortis. Nam semper ante magna, eu tincidunt diam rutrum in. Maecenas blandit nunc ut urna convallis, ac lobortis arcu commodo. Donec euismod justo ut ante feugiat, et sagittis ligula dignissim. Praesent ultricies est quis nulla porta molestie. Vestibulum tristique vitae augue vel maximus. Nulla ut hendrerit ligula. Nulla facilisi. Nullam odio mi, vestibulum non magna vitae, condimentum tincidunt eros. Cras blandit nisl vel purus gravida finibus nec non enim. Duis ultrices faucibus orci ac sollicitudin. Morbi fermentum lobortis velit eget lacinia. Duis rutrum varius luctus. Donec egestas ultrices tempor.           ",
-            "createdAt": "2024-06-09T11:15:01.000Z",
-            "updatedAt": "2024-06-09T11:15:01.000Z"
-        },
-        {
-            "id": 6,
-            "title": "Campaign 72",
-            "content": "teaazfteaazfteaazf",
-            "createdAt": "2024-06-09T11:15:01.000Z",
-            "updatedAt": "2024-06-09T11:15:01.000Z"
-        },
-        {
-            "id": 7,
-            "title": "Campaign 66",
-            "content": "teaazfteaazfteaazf",
-            "createdAt": "2024-06-09T11:15:01.000Z",
-            "updatedAt": "2024-06-09T11:15:01.000Z"
-        },
-        {
-            "id": 8,
-            "title": "Campaign 7",
-            "content": "teaazfteaazfteaazf",
-            "createdAt": "2024-06-09T11:15:01.000Z",
-            "updatedAt": "2024-06-09T11:15:01.000Z"
-        },
-        {
-            "id": 9,
-            "title": "Campaign 6",
-            "content": "teaazfteaazfteaazf",
-            "createdAt": "2024-06-09T11:15:01.000Z",
-            "updatedAt": "2024-06-09T11:15:01.000Z"
-        },
-        {
-            "id": 10,
-            "title": "Campaign 4",
-            "content": "teaazfteaazfteaazf",
-            "createdAt": "2024-06-09T11:15:01.000Z",
-            "updatedAt": "2024-06-09T11:15:01.000Z"
-        },
-        {
-            "id": 11,
-            "title": "Campaign 5",
+            "title": "teaazfteaazf",
             "content": "teaazfteaazfteaazf",
             "createdAt": "2024-06-09T11:15:01.000Z",
             "updatedAt": "2024-06-09T11:15:01.000Z"
@@ -73,53 +31,8 @@ export const projectDummy = {
     "reward": [
         {
             "id": 1,
-            "title": "Reward 1",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a suscipit mauris. Integer a egestas felis, quis lacinia lectus. Ut eleifend leo eu tempus lobortis. Nam semper ante magna, eu tincidunt diam rutrum in. Maecenas blandit nunc ut urna convallis, ac lobortis arcu commodo.",
-            "photo": "thoma_1717931701189.jpg",
-            "price": 4,
-            "createdAt": "2024-06-09T11:15:01.000Z",
-            "updatedAt": "2024-06-09T11:15:01.000Z"
-        },
-        {
-            "id": 2,
-            "title": "Reward 2",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a suscipit mauris. Integer a egestas felis, quis lacinia lectus. Ut eleifend leo eu tempus lobortis. Nam semper ante magna, eu tincidunt diam rutrum in. Maecenas blandit nunc ut urna convallis, ac lobortis arcu commodo.",
-            "photo": "thoma_1717931701189.jpg",
-            "price": 4,
-            "createdAt": "2024-06-09T11:15:01.000Z",
-            "updatedAt": "2024-06-09T11:15:01.000Z"
-        },
-        {
-            "id": 3,
-            "title": "Reward 3",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a suscipit mauris. Integer a egestas felis, quis lacinia lectus. Ut eleifend leo eu tempus lobortis. Nam semper ante magna, eu tincidunt diam rutrum in. Maecenas blandit nunc ut urna convallis, ac lobortis arcu commodo.",
-            "photo": "thoma_1717931701189.jpg",
-            "price": 4,
-            "createdAt": "2024-06-09T11:15:01.000Z",
-            "updatedAt": "2024-06-09T11:15:01.000Z"
-        },
-        {
-            "id": 4,
-            "title": "Reward 4",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a suscipit mauris. Integer a egestas felis, quis lacinia lectus. Ut eleifend leo eu tempus lobortis. Nam semper ante magna, eu tincidunt diam rutrum in. Maecenas blandit nunc ut urna convallis, ac lobortis arcu commodo.",
-            "photo": "thoma_1717931701189.jpg",
-            "price": 4,
-            "createdAt": "2024-06-09T11:15:01.000Z",
-            "updatedAt": "2024-06-09T11:15:01.000Z"
-        },
-        {
-            "id": 5,
-            "title": "Reward 5",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a suscipit mauris. Integer a egestas felis, quis lacinia lectus. Ut eleifend leo eu tempus lobortis. Nam semper ante magna, eu tincidunt diam rutrum in. Maecenas blandit nunc ut urna convallis, ac lobortis arcu commodo.",
-            "photo": "thoma_1717931701189.jpg",
-            "price": 4,
-            "createdAt": "2024-06-09T11:15:01.000Z",
-            "updatedAt": "2024-06-09T11:15:01.000Z"
-        },
-        {
-            "id": 6,
-            "title": "Reward 6",
-            "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a suscipit mauris. Integer a egestas felis, quis lacinia lectus. Ut eleifend leo eu tempus lobortis. Nam semper ante magna, eu tincidunt diam rutrum in. Maecenas blandit nunc ut urna convallis, ac lobortis arcu commodo.",
+            "title": "teaazf",
+            "description": "teaazfteaazfteaazf",
             "photo": "thoma_1717931701189.jpg",
             "price": 4,
             "createdAt": "2024-06-09T11:15:01.000Z",
@@ -143,9 +56,9 @@ export const projectDummy = {
     "comment": [],
     "favorites": [
         {
-            "id": 1,
-            "createdAt": "2024-06-09T22:31:38.000Z",
-            "updatedAt": "2024-06-09T22:31:38.000Z",
+            "id": 4,
+            "createdAt": "2024-06-09T22:55:39.000Z",
+            "updatedAt": "2024-06-09T22:55:39.000Z",
             "user": {
                 "id": 8,
                 "email": "claire.laurent@mail.fr",
@@ -174,5 +87,40 @@ export const projectDummy = {
             "name": "thoma_1717931701175.jpg"
         }
     ],
-    "investments": []
+    "investments": [
+        {
+            "id": 1,
+            "amount": 0,
+            "createdAt": "2024-06-10T16:12:20.059Z",
+            "user": {
+                "id": 1,
+                "email": "rominage.115@gmail.com",
+                "lastname": "Pham",
+                "firstname": "Son Tung",
+                "password": "be851d8cf71f9823e1e5429b48b5c5",
+                "phone": "0758099898",
+                "photo": "cropp_1718000454470.jpg",
+                "stripeId": "cus_QDo3XZCLpRAjbO",
+                "createdAt": "2024-06-02T21:59:54.000Z",
+                "updatedAt": "2024-06-10T06:20:54.000Z"
+            }
+        },
+        {
+            "id": 2,
+            "amount": 10,
+            "createdAt": "2024-06-10T16:16:09.406Z",
+            "user": {
+                "id": 1,
+                "email": "rominage.115@gmail.com",
+                "lastname": "Pham",
+                "firstname": "Son Tung",
+                "password": "be851d8cf71f9823e1e5429b48b5c5",
+                "phone": "0758099898",
+                "photo": "cropp_1718000454470.jpg",
+                "stripeId": "cus_QDo3XZCLpRAjbO",
+                "createdAt": "2024-06-02T21:59:54.000Z",
+                "updatedAt": "2024-06-10T06:20:54.000Z"
+            }
+        }
+    ]
 }

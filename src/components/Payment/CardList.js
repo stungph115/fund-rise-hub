@@ -8,6 +8,7 @@ import { Button, Form, Modal } from 'react-bootstrap'
 import { faCheckCircle, faSpinner, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { getIconByBrand } from '../../utils/utils'
 import { Fade } from 'react-reveal'
+import SpinnerGreen from '../../utils/Spinner'
 
 function ListCard({ client, selectedCard, setSelectedCard }) {
     const stripe = useStripe()
@@ -175,7 +176,7 @@ function ListCard({ client, selectedCard, setSelectedCard }) {
     }
     if (isLoadingList) {
         return (
-            <FontAwesomeIcon icon={faSpinner} pulse style={{ color: 'gray', width: '100%', paddingBlock: 50 }} size='xl' />
+            <SpinnerGreen />
         )
     } else {
         return (

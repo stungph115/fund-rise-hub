@@ -4,7 +4,7 @@ import { Button, Image } from 'react-bootstrap';
 import defaultRewardPhoto from '../../assets/reward-default.jpg'
 import { env } from '../../env';
 
-function Campaign({ campaigns, reward }) {
+function Campaign({ campaigns, reward, goToCheckOut, backable }) {
     const [selectedCampaign, setSelectedCampaign] = useState(null);
     const handleCampaignClick = (campaign) => {
         setSelectedCampaign(campaign);
@@ -40,11 +40,11 @@ function Campaign({ campaigns, reward }) {
             </div>
             <div className="campaign-list-reward">
                 <div style={{ fontSize: 18, marginBottom: 20 }} >Assistance</div>
-                <div className='campaign-list-reward-card'>
+                {backable && <div className='campaign-list-reward-card'>
                     <div style={{ fontSize: 16, marginBottom: 20, color: 'rgb(59, 59, 59)' }}>S'engager sans recevoir de récompense</div>
-                    <Button className='campaign-list-button'>Continuer</Button>
+                    <Button className='campaign-list-button' onClick={() => goToCheckOut()}>Continuer</Button>
 
-                </div>
+                </div>}
                 <div style={{ fontSize: 18, marginBottom: 20 }} >Récompenses disponibles</div>
                 {reward.map((item) => (
                     <div key={item.id} className='campaign-list-reward-card'>
@@ -60,7 +60,7 @@ function Campaign({ campaigns, reward }) {
                         <div className='reward-description'>{item.description}</div>
                         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 20 }}>
                             <Button className='campaign-button-white'>Détails</Button>
-                            <Button className='campaign-list-button' style={{ width: '59%' }}>Engagement de {item.price} €</Button>
+                            {backable && <Button className='campaign-list-button' style={{ width: '59%' }} onClick={() => goToCheckOut()}>Engagement de {item.price} €</Button>}
                         </div>
                     </div>
                 ))}

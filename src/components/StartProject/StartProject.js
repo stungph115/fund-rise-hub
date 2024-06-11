@@ -13,6 +13,7 @@ import ProjectPreview from './ProjectPreview';
 registerLocale('fr', fr);
 
 const StartProject = ({ categories }) => {
+    console.log(categories)
     //info basic
     const [step, setStep] = useState(1)
     const [category, setCategory] = useState('')

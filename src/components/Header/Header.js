@@ -260,7 +260,13 @@ function Header() {
         }
     }, [currentUser])
     const totalCount = countUnreadNotification + unreadMessageCount
+    function handleSearch(title, category, subCategory, topFavorites, topComments, reach90Percent, expireSoon, topLatest, topPassedGoal) {
+        const searchParams = new URLSearchParams({
+            title, category, subCategory, topFavorites, topComments, reach90Percent, expireSoon, topLatest, topPassedGoal
+        }).toString();
 
+        navigate(`/discover?${searchParams}`);
+    }
 
     if (headerLogoOnlyRoutes.includes(currentRoute) || /^\/reset-password\/.*/.test(currentRoute) || /^\/project\/checkout\/.*/.test(currentRoute) || /^\/checkout\/.*/.test(currentRoute)) {
         return (
@@ -324,7 +330,7 @@ function Header() {
                                 <div className='sub-categories-list-tile'>{hoveredCategory.name} {">"}</div>
                                 <div className='sub-categories-columns'>
                                     {hoveredCategory.subCatgory.map((subCategory, index) => (
-                                        <div key={index} className="sub-category" style={{ marginTop: 10 }}>{subCategory.name}</div>
+                                        <div key={index} className="sub-category" style={{ marginTop: 10 }} onClick={() => { handleSearch('', hoveredCategory.id, subCategory.id, false, false, false, false, false, false) }}>{subCategory.name}</div>
                                         /* architechture: list of sub cat | filters | feature project (most liked) */
                                     ))}
                                 </div>
@@ -333,12 +339,11 @@ function Header() {
 
                             <div className='sub-categories-filters'>
                                 <div className='sub-categories-other-tile'>Filtrer par</div>
-                                <div className="sub-category-filter">  Nos coups de cœur</div>
-                                <div className="sub-category-filter">  Les tendances</div>
-                                <div className="sub-category-filter">  Projets presque financés</div>
-                                <div className="sub-category-filter">  En début de campagne</div>
-                                <div className="sub-category-filter">  Projets près de chez vous</div>
-                                <div className="sub-category-filter">  Bientôt en ligne</div>
+                                <div className="sub-category-filter" onClick={() => { handleSearch('', hoveredCategory.id, null, true, false, false, false, false, false) }}>  Nos coups de cœur</div>
+                                <div className="sub-category-filter" onClick={() => { handleSearch('', hoveredCategory.id, null, false, true, false, false, false, false) }}>  Les tendances</div>
+                                <div className="sub-category-filter" onClick={() => { handleSearch('', hoveredCategory.id, null, false, false, true, false, false, false) }}>  Projets presque financés</div>
+                                <div className="sub-category-filter" onClick={() => { handleSearch('', hoveredCategory.id, null, false, false, false, false, true, false) }}>  En début de campagne</div>
+                                <div className="sub-category-filter" onClick={() => { handleSearch('', hoveredCategory.id, null, false, false, false, false, false, true) }}>  Très au-dessus de l'objectif</div>
                             </div>
                             <div className='sub-categories-project'>
                                 <div className='sub-categories-other-tile'>Projet sélectionné</div>

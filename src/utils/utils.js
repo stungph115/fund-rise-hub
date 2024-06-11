@@ -8,6 +8,10 @@ export const formatDateTime = (dateTimeString) => {
     const formattedDateTime = moment(dateTimeString).format('DD MMM YYYY [à] HH[h]mm')
     return formattedDateTime
 }
+export const formatDate = (dateTimeString) => {
+    const formattedDateTime = moment(dateTimeString).format('DD MMM YYYY')
+    return formattedDateTime
+}
 export const formatMonthYear = (dateTimeString) => {
     const formattedDateTime = moment(dateTimeString).format(' MMM YYYY')
     return formattedDateTime
@@ -20,7 +24,7 @@ export const formatMontant = (montant) => {
         currencyDisplay: 'symbol',
     });
 
-    return formatter.format(montant / 100)
+    return formatter.format(montant)
 }
 export const addSpacesToNumber = (number) => {
     // Convert number to string

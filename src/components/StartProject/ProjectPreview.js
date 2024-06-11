@@ -6,12 +6,14 @@ import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { env } from '../../env';
 import { Fade } from 'react-reveal';
+import '../../styles/project/projectPreview.css'
+import { formatMontant } from '../../utils/utils';
+import { useNavigate } from 'react-router';
 
 const ProjectPreview = ({ projectData, onBack, categories }) => {
-    console.log(categories)
+    const navigate = useNavigate()
     const currentUserId = useSelector((state) => state.userReducer.id)
     const { category, subCategory, title, description, photos, campaigns, rewards, goal, deadline } = projectData;
-    console.log('subCategory', subCategory)
     async function createProject() {
         const photosProjectUploaded = await Promise.all(photos.map(photo => uploadPhoto(photo)));
         const rewardsProjectUploaded = await Promise.all(rewards.map(reward => uploadPhoto(reward.photo)));
@@ -34,10 +36,11 @@ const ProjectPreview = ({ projectData, onBack, categories }) => {
             campaigns,
             rewards: rewardData,
         };
-        console.log(params)
         try {
             const response = await axios.post(env.URL + 'projects', params);
-            console.log(response.data);
+            if (response.data.status === 201 && response.data.projectId) {
+                navigate('/start/success/' + response.data.projectId)
+            }
         } catch (error) {
             console.error(error);
         }
@@ -76,39 +79,39 @@ const ProjectPreview = ({ projectData, onBack, categories }) => {
         <Fade bottom>
             <>
                 <div>
-                    <div style={{ display: 'flex' }} >
+                    <div className='project-preview-item' >
                         <div className='project-preview-title'>Catégorie:</div>
-                        <p>{getCategoryName(category)}</p>
+                        <div className='project-preview-content'>{getCategoryName(category)}</div>
                     </div>
 
                     {subCategory && (
-                        <div style={{ display: 'flex' }}>
+                        <div className='project-preview-item'>
                             <div className='project-preview-title'>Sous-catégorie:</div>
-                            <p>{getSubCategoryName(category, subCategory)}</p>
+                            <div className='project-preview-content'>{getSubCategoryName(category, subCategory)}</div>
                         </div>
                     )}
 
-                    <div style={{ display: 'flex' }}>
+                    <div className='project-preview-item'>
                         <div className='project-preview-title'>Titre:</div>
-                        <p>{title}</p>
+                        <div className='project-preview-content'>{title}</div>
                     </div>
-                    <div style={{ display: 'flex' }}>
+                    <div className='project-preview-item'>
                         <div className='project-preview-title'>Description:</div>
-                        <p>{description}</p>
+                        <div className='project-preview-content'>{description}</div>
                     </div>
-                    <div style={{ display: 'flex' }}>
+                    <div className='project-preview-item'>
                         <div className='project-preview-title'>Objectif de financement:</div>
-                        <p>{goal} €</p>
+                        <div className='project-preview-content'>{formatMontant(goal)}</div>
                     </div>
-                    <div style={{ display: 'flex' }}>
+                    <div className='project-preview-item'>
                         <div className='project-preview-title'>Date limite:</div>
-                        <p>{deadline && deadline.toLocaleDateString('fr-FR')}</p>
+                        <div className='project-preview-content'>{deadline && deadline.toLocaleDateString('fr-FR')}</div>
                     </div>
 
 
 
-                    <div className='project-preview-title'>Photos:</div>
-                    <div className='photos-list'>
+                    <div className='project-preview-title' style={{ marginBottom: 10 }}>Photos:</div>
+                    <div className='photos-list' style={{ marginBottom: 30 }}>
                         {photos.map((photo, index) => (
                             <Image key={index} src={URL.createObjectURL(photo)} alt={`photo-${index}`} style={{ width: '100px', marginRight: '10px' }} />
                         ))}
@@ -124,7 +127,7 @@ const ProjectPreview = ({ projectData, onBack, categories }) => {
                             </Card>
                         ))}
                     </div>
-                    <div className='project-preview-title'>Récompenses:</div>
+                    <div className='project-preview-title' style={{ marginTop: 20 }}>Récompenses:</div>
                     <div className='campaign-list'>
                         {rewards.map((reward, index) => (
                             <Card key={index} className='reward-card'>

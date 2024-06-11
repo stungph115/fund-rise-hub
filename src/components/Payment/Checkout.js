@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { env } from "../../env"
 import ListCard from "./CardList"
 import '../../styles/checkout.css'
@@ -14,7 +14,7 @@ import { faSpinner } from "@fortawesome/free-solid-svg-icons"
 
 function Checkout() {
     const stripe = useStripe()
-
+    const navigate = useNavigate()
     const [project, setProject] = useState(null)
     const [reward, setReward] = useState(null)
     const [selectedCard, setSelectedCard] = useState(null)
@@ -91,16 +91,20 @@ function Checkout() {
                     if (res.paymentIntent.status === 'succeeded') {
                         //ridirect
                         setSucceeded("Paiement réussit")
-                        setPaymentIntent(null)
+
                         //create invest
+                        createInvest(paymentIntent.paymentId)
                         //create reward earned if needed
+                        if (reward) {
+                            createRewardEarned()
+                        }
+                        navigate("/payment/success")
                     }
                 }
                 if (res.error) {
                     if (res.error.code === 'incorrect_cvc') {
                         setError("Code cryptogramme visuel est incorrect.")
                         //code générale information incorrects
-
                     }
                     if (res.error.code === 'card_declined') {
                         setError("Paiement refusé. Réessayer ou choisir une autre carte.")
@@ -112,7 +116,31 @@ function Checkout() {
                 setIsLoading(false)
             })
     }
+    async function createInvest(paymentId) {
+        const params = {
+            userId: currentUser.id,
+            paymentId: paymentId,
+            amount: amout,
+            projectId: project.id,
+        }
+        axios.post(env.URL + 'invest', params).then((res) => {
+            console.log(res)
+        }).catch((err) => {
+            console.log(err)
+        })
+    }
+    async function createRewardEarned() {
+        const params = {
+            userId: currentUser.id,
+            rewardId: reward.id,
+        }
+        axios.post(env.URL + 'reward-earned', params).then((res) => {
+            console.log(res)
+        }).catch((err) => {
+            console.log(err)
+        })
 
+    }
     return (
         <Fade right>
             <>

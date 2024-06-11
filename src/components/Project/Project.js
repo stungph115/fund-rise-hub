@@ -3,7 +3,7 @@ import '../../styles/Project.css'
 import { env } from '../../env'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { Button, Card, Image } from 'react-bootstrap'
+import { Button, Card, Image, ProgressBar } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faChevronRight, faLink, faTag, faTags, faHeart as faHeartSolid, faDollarSign } from '@fortawesome/free-solid-svg-icons'
 import { faSquareFacebook, faSquareTwitter } from '@fortawesome/free-brands-svg-icons'
@@ -18,6 +18,8 @@ import Comment from './Comments'
 import { projectDummy } from '../../utils/Dummy'
 import { useSelector } from 'react-redux'
 import avatarDefault from '../../assets/default-avata.jpg'
+import Checkout from '../Payment/Checkout'
+import CountUp from 'react-countup';
 
 function Project({ }) {
     const currentUser = useSelector((state) => state.userReducer)
@@ -80,7 +82,6 @@ function Project({ }) {
     function deleteFavorite() {
         const favorite = project.favorites.find(favorite => favorite.user.id === currentUser.id)
         axios.delete(env.URL + 'favorite/' + favorite.id).then((res) => {
-            console.log(res)
             if (res) {
                 getProjectDetail()
             }
@@ -90,8 +91,24 @@ function Project({ }) {
         })
     }
     const isFavorite = project && project.favorites.some(favorite => favorite.user.id === currentUser.id);
+    function goToCheckOut() {
+        navigate('/project/checkout/' + project.id)
+    }
+    const backable = (currentUser && project && (currentUser.id !== project.userCreator.id) && (calculateDaysLeft(project.deadline) > 0))
+
+    function calculateTotalInvestment(investments) {
+        return investments.reduce((total, investment) => total + investment.amount, 0);
+    }
+    function calculateUniqueInvestors(investments) {
+        const uniqueInvestors = new Set(investments.map(investment => investment.user.id));
+        return uniqueInvestors.size;
+    }
 
     if (project) {
+        const totalInvestment = calculateTotalInvestment(project.investments);
+        const progress = (totalInvestment / project.goal) * 100;
+        const uniqueInvestors = calculateUniqueInvestors(project.investments);
+
         return (
             <div className='project-page'>
                 <div className='project-page-title'>{project.title}</div>
@@ -139,16 +156,20 @@ function Project({ }) {
                     </div>
                     <div className='project-page-top-right-left'>
                         <div className='project-page-progress'>
+                            <ProgressBar now={progress} label={`${progress.toFixed(2)}%`} className='projec-progress-bar' />
+
                             <div className='project-page-num-total'>
-                                1 035 895€
+                                <CountUp end={totalInvestment} duration={2} separator=" " /> €
                             </div>
                             <div className='project-page-text-under'>
-                                engagés sur objectif de {project.goal}€
+
+                                engagés sur objectif de <CountUp end={project.goal} duration={2} separator=" " /> €
                             </div>
                         </div>
+
                         <div className='project-page-num-investor'>
                             <div className='project-page-num-normal'>
-                                10 743
+                                {uniqueInvestors}
                             </div>
                             <div className='project-page-text-under'>
                                 contributeurs
@@ -169,9 +190,9 @@ function Project({ }) {
                             )}
 
                         </div>
-                        <div className='project-page-num-button-invest'>
+                        {((currentUser.id !== project.userCreator.id) && (calculateDaysLeft(project.deadline) > 0)) && <div className='project-page-num-button-invest' onClick={() => goToCheckOut()}>
                             Je soutiens ce projet
-                        </div>
+                        </div>}
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             {
 
@@ -227,9 +248,9 @@ function Project({ }) {
                         <div className={menuItem === 6 ? 'project-page-menu-item chosen' : 'project-page-menu-item'} onClick={() => setMenuItem(6)}>Communauté</div>
                     </div>
                     <div className='project-page-menu-item-right'>
-                        <div className='project-page-num-button-invest' style={{ width: 'fit-content', marginBlock: 0, marginInline: 20 }}>
+                        {((currentUser.id !== project.userCreator.id) && (calculateDaysLeft(project.deadline) > 0)) && <div className='project-page-num-button-invest' style={{ width: 'fit-content', marginBlock: 0, marginInline: 20 }} onClick={() => goToCheckOut()}>
                             Je soutiens ce projet
-                        </div>
+                        </div>}
 
                         {currentUser.id !== project.userCreator.id ?
                             <div className={isFavorite ? 'project-page-num-button-favorited' : 'project-page-num-button-favorite'}
@@ -251,8 +272,8 @@ function Project({ }) {
 
                     </div>
                 </div>
-                {menuItem === 1 && <Campaign campaigns={project.campaign} reward={project.reward} />}
-                {menuItem === 2 && <Reward reward={project.reward} />}
+                {menuItem === 1 && <Campaign campaigns={project.campaign} reward={project.reward} goToCheckOut={goToCheckOut} backable={backable} />}
+                {menuItem === 2 && <Reward reward={project.reward} goToCheckOut={goToCheckOut} backable={backable} />}
                 {menuItem === 3 && <FAQ faq={project.faq} />}
                 {menuItem === 4 && <Updates update={project.update} />}
                 {menuItem === 5 && <Comment comment={project.comment} />}

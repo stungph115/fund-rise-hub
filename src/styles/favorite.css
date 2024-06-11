@@ -1,0 +1,17 @@
+.favorite-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* Center the projects */
+    gap: 20px;
+}
+
+.favorite-card {
+    flex: 1 1 calc(50% - 40px); /* Two cards per row with gap */
+    max-width: 300px; /* Optional: Limit the maximum width of each card */
+    margin-bottom: 20px;
+}
+
+.favorite-card img {
+    height: 200px;
+    object-fit: cover;
+}

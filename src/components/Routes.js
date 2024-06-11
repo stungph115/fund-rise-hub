@@ -13,6 +13,10 @@ import Payment from "./Payment/Payment";
 import StartProject from "./StartProject/StartProject";
 import ProjectCheckOut from "./Project/ProjectCheckOut";
 import Checkout from "./Payment/Checkout";
+import PaymentSuccess from "./Payment/PaymentSuccess";
+import Favorite from "./Project/Favorite";
+import ProjectCreated from "./StartProject/ProjectCreated";
+import Discover from "./Discover/Discover";
 
 export default function AppRoutes({ categories }) {
     return (
@@ -27,12 +31,14 @@ export default function AppRoutes({ categories }) {
             <Route path="/profile/:userId" element={<Profile />} />
             <Route path="/message" element={<Message />} />
             <Route path="/project/:projectId" element={<Project />} />
-            <Route path="/project/checkout/:projectId" element={<ProjectCheckOut />} />
+            <Route path="/project/checkout/:projectId/" element={<ProjectCheckOut />} />
             <Route path="/payment" element={<Payment />} />
             <Route path="/start" element={<StartProject categories={categories} />} />
             <Route path="/checkout/:idProject/:idReward/:amout" element={<Checkout />} />
-
-
+            <Route path="/payment/success" element={<PaymentSuccess />} />
+            <Route path="/favorite" element={<Favorite />} />
+            <Route path="/start/success/:idProject" element={<ProjectCreated />} />
+            <Route path="/discover/" element={< Discover categories={categories} />} />
             <Route path="*" element={<Navigate to="/not-found" />} />
         </Routes>
     )

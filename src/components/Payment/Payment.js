@@ -3,6 +3,7 @@ import '../../styles/Payment.css'
 import { useState } from 'react'
 import ListCard from './CardList'
 import { Fade } from 'react-reveal'
+import PaymentList from './PaymentList'
 function Payment() {
     const currentUser = useSelector((state) => state.userReducer)
     const [selectedCard, setSelectedCard] = useState(null)
@@ -20,10 +21,11 @@ function Payment() {
                     {switchValue === 1 &&
                         <ListCard client={currentUser} selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
                     }
-                    {/* lisst card */}
 
-                    {/* add card */}
-                    {/* payment history */}
+                    {/* payment history */
+                        switchValue === 2 &&
+                        <PaymentList client={currentUser} />
+                    }
                     {/* sub history */}
                 </div>
             </div>

@@ -249,7 +249,7 @@
 
 .header-search-result {
     position: absolute;
-    height: 500px;
+    height: 750px;
     top: 100%;
     left: 0;
     width: 100%;
@@ -294,4 +294,13 @@
 
 .header-search-close:hover {
     color: #4FCD94;
+}
+
+.projec-header-search {
+    cursor: pointer;
+    margin: 10px;
+}
+
+.projec-header-search:hover {
+    border: 2px #4FCD94 solid
 }

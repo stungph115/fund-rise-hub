@@ -3,7 +3,7 @@ import { env } from "../../env";
 import defaultRewardPhoto from '../../assets/reward-default.jpg'
 import { Button, Image } from "react-bootstrap";
 
-function Reward({ reward }) {
+function Reward({ reward, goToCheckOut, backable }) {
     console.log(reward)
     const [selectedReward, setSelectedReward] = useState(null);
     const handleRewardClick = (reward) => {
@@ -33,7 +33,7 @@ function Reward({ reward }) {
                     <>
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
                             <h2 style={{ marginBottom: 20, textAlign: "center" }}>{selectedReward.title}</h2>
-                            <Button className='campaign-list-button' style={{ width: '20%' }}>Engagement de {selectedReward.price} €</Button>
+                            {backable && <Button className='campaign-list-button' style={{ width: '20%' }} onClick={() => goToCheckOut()}>Engagement de {selectedReward.price} €</Button>}
                         </div>
 
                         <Image
