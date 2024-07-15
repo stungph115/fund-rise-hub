@@ -19,7 +19,6 @@ See the section about [running tests](https://facebook.github.io/create-react-ap
 ### data for testing:
 ***user:
 
-
 Nom: Dubois
 Prénom: Luc
 Numéro téléphone: 07 12 34 56 78
@@ -85,9 +84,6 @@ Numéro téléphone: 07 99 88 77 66
 Email: alexandre.petit@mail.fr
 Password: Azerty1234&
 
-****testing admin cresdential:
-admin@fundrisehub.fr
-Azerty1234&
 
 ****stripe cli listener
 stripe login
