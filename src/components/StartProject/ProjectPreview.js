@@ -37,7 +37,8 @@ const ProjectPreview = ({ projectData, onBack, categories }) => {
             rewards: rewardData,
         };
         try {
-            const response = await axios.post(env.URL + 'projects', params);
+            const response = await axios.post(env.URL + 'projects', params)
+            console.log(response)
             if (response.data.status === 201 && response.data.projectId) {
                 navigate('/start/success/' + response.data.projectId)
             }

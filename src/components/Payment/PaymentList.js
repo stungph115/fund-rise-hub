@@ -149,7 +149,7 @@ function PaymentList({ client }) {
                         <th>Montant</th>
                         <th>Date Heure</th>
                         <th>Méthode de paiement</th>
-                        <th>Statut</th>
+                        {/* <th>Statut</th> */}
                     </tr>
                 </thead>
                 <tbody>
@@ -161,9 +161,9 @@ function PaymentList({ client }) {
                             <td>{payment.invest ? payment.invest.amount + ' €' : 'N/A'}</td>
                             <td>{formatDateTime(payment.dateCreated)}</td>
                             <td>{payment.paymentMethod ? payment.paymentMethod : 'N/A'}</td>
-                            <td style={{ color: payment.status === 'paid' ? 'green' : 'red' }}>
+                            {/*  <td style={{ color: payment.status === 'paid' ? 'green' : 'red' }}>
                                 {payment.status === 'paid' ? 'payé' : 'impayé'}
-                            </td>
+                            </td> */}
                         </tr>
                     ))}
                 </tbody>

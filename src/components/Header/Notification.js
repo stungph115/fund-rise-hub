@@ -223,7 +223,7 @@ function Notification({ getCountUnreadNotificationHeader, countUnreadNotificatio
                                 </div>
                             </div>
 
-                            <Modal show={displayDeleteAllNotif} size="lg" onHide={(e) => { e.stopPropagation(); setDisplayDeleteAllNotif(false) }}>
+                            <Modal show={displayDeleteAllNotif} size="lg" onHide={(e) => { e.stopPropagation(); setDisplayDeleteAllNotif(false) }} centered>
                                 <Modal.Header>
                                     <Modal.Title><div style={{ justifyContent: 'center' }}>Suppression des notifications</div></Modal.Title>
                                 </Modal.Header>

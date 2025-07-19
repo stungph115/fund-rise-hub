@@ -195,7 +195,7 @@ const StartProject = ({ categories }) => {
                                 <div className='start-project-button-previous' onClick={prevStep}>
                                     <FontAwesomeIcon icon={faArrowLeftLong} style={{ marginRight: 10 }} /> Présentation
                                 </div>
-                                <div className={(title && description) ? 'start-project-button-next' : 'start-project-button-next-disable'} onClick={(!title || !description) ? null : nextStep}>
+                                <div className={(title && description && photos.length > 0) ? 'start-project-button-next' : 'start-project-button-next-disable'} onClick={(!title || !description || photos.length === 0) ? null : nextStep}>
                                     Suivant: Campagnes
                                 </div>
                             </div>

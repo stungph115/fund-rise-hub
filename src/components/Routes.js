@@ -35,7 +35,7 @@ export default function AppRoutes({ categories }) {
             <Route path="/payment" element={<Payment />} />
             <Route path="/start" element={<StartProject categories={categories} />} />
             <Route path="/checkout/:idProject/:idReward/:amout" element={<Checkout />} />
-            <Route path="/payment/success" element={<PaymentSuccess />} />
+            <Route path="/payment/success/:idProject" element={<PaymentSuccess />} />
             <Route path="/favorite" element={<Favorite />} />
             <Route path="/start/success/:idProject" element={<ProjectCreated />} />
             <Route path="/discover/" element={< Discover categories={categories} />} />

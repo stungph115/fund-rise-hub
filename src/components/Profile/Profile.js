@@ -309,6 +309,21 @@ function Profile() {
         setShowUnfollowAlert(true)
         setUnfollowAlertText(text)
     }
+    useEffect(() => {
+        if (user?.firstname) {
+            setFirstname(user.firstname);
+        }
+        if (user?.lastname) {
+            setLastname(user.lastname);
+        }
+        if (user?.email) {
+            setEmail(user.email);
+        }
+        if (user?.phone) {
+            setPhone(user.phone);
+        }
+    }, [user]);
+
     return (
         <>
             {user ?
@@ -450,20 +465,20 @@ function Profile() {
                         </div>
                         <div className='profile-bottom'>
                             <div className='profile-bottom-switch'>
-                                <div className={switchValue === 1 ? 'profile-switch-button chosen' : 'profile-switch-button'} onClick={() => setSwitchValue(1)}>Projets créés ({currentUserInfo ? currentUserInfo.project.length : 0})  </div>
-                                <div className={switchValue === 2 ? 'profile-switch-button chosen' : 'profile-switch-button'} onClick={() => setSwitchValue(2)}>Projets soutenus ({currentUserInfo ? new Set(currentUserInfo.investments.map(investment => investment.project.id)).size : 0}) </div>
-                                <div className={switchValue === 3 ? 'profile-switch-button chosen' : 'profile-switch-button'} onClick={() => setSwitchValue(3)}>Récompenses gagnées ({currentUserInfo ? currentUserInfo.rewardEarned.length : 0}) </div>
+                                <div className={switchValue === 1 ? 'profile-switch-button chosen' : 'profile-switch-button'} onClick={() => setSwitchValue(1)}>Projets créés ({user ? user.project.length : 0})  </div>
+                                <div className={switchValue === 2 ? 'profile-switch-button chosen' : 'profile-switch-button'} onClick={() => setSwitchValue(2)}>Projets soutenus ({user ? new Set(user.investments.map(investment => investment.project.id)).size : 0}) </div>
+                                <div className={switchValue === 3 ? 'profile-switch-button chosen' : 'profile-switch-button'} onClick={() => setSwitchValue(3)}>Récompenses gagnées ({user ? user.rewardEarned.length : 0}) </div>
                             </div>
-                            {currentUserInfo ?
+                            {user ?
                                 <div className='profile-bottom-content'>
                                     {switchValue === 1 &&
-                                        <ProjectCreated projects={currentUserInfo ? currentUserInfo.project : []} />
+                                        <ProjectCreated projects={user ? user.project : []} />
                                     }
                                     {switchValue === 2 &&
-                                        <ProjectBacked investments={currentUserInfo ? currentUserInfo.investments : []} />
+                                        <ProjectBacked investments={user ? user.investments : []} />
                                     }
                                     {switchValue === 3 &&
-                                        <RewardEarned rewards={currentUserInfo ? currentUserInfo.rewardEarned : []} />
+                                        <RewardEarned rewards={user ? user.rewardEarned : []} />
                                     }
                                 </div> : <SpinnerGreen />
                             }

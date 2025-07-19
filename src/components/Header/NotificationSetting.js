@@ -67,7 +67,7 @@ function NotificationSetting({
                             </div>
                             Supprimer
                         </div>
-                        <Modal show={displayDeleteNotif} size="lg" onHide={() => setDisplayDeleteNotif(false)}>
+                        <Modal show={displayDeleteNotif} size="lg" onHide={() => setDisplayDeleteNotif(false)} centered>
                             <Modal.Header closeButton>
                                 <Modal.Title><div style={{ justifyContent: 'center' }}>Suppression de notification</div></Modal.Title>
                             </Modal.Header>
@@ -75,7 +75,7 @@ function NotificationSetting({
                                 Supprimer  cette notification ?
                             </Modal.Body>
                             <Modal.Footer >
-                                <Button variant="danger" onClick={() => deleteNotification(notification.id)}>Supprimer</Button>
+                                <Button variant="danger" onClick={(e) => (e.stopPropagation, deleteNotification(notification.id))}>Supprimer</Button>
                             </Modal.Footer>
                         </Modal>
                     </div>

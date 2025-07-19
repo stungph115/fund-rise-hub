@@ -36,9 +36,11 @@ function App() {
         tokenJWT: tokenJWTStore
       }).then((res) => {
         if (res.data === "TOKENJWT_VERIFIED") {
+          console.log('check sign in res: ',res)
           socket.emit("user-connect", user.id)
         }
       }).catch((error) => {
+         console.log('check sign in err: ',error)
         console.log("error :\n" + JSON.stringify(error) + "\n\n")
       })
     }

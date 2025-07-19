@@ -55,11 +55,14 @@ function Header() {
         getCountUnreadNotification()
     }, [])
     function getCountUnreadNotification() {
-        axios.get(env.URL + 'notification/count-unread/' + currentUserId).then((response) => {
-            setCountUnreadNotification(response.data.numberUnreadNotification)
-        }).catch((error) => {
-            console.error(error)
-        })
+        if (currentUserId) {
+            axios.get(env.URL + 'notification/count-unread/' + currentUserId).then((response) => {
+                setCountUnreadNotification(response.data.numberUnreadNotification)
+            }).catch((error) => {
+                console.error(error)
+            })
+        }
+
     }
     function onClickNotification(notification) {
         if (notification.read === 0) {
@@ -214,7 +217,7 @@ function Header() {
 
     }
 
-    const headerLogoOnlyRoutes = ['/sign-in', '/sign-up', '/forget-password', '/start']
+    const headerLogoOnlyRoutes = ['/sign-in', '/sign-up', '/forget-password', '/start', '/payment/success']
     //sockets
     useEffect(() => {
         socket.on('new_message_' + currentUser.id, () => {
@@ -268,7 +271,10 @@ function Header() {
         navigate(`/discover?${searchParams}`);
     }
 
-    if (headerLogoOnlyRoutes.includes(currentRoute) || /^\/reset-password\/.*/.test(currentRoute) || /^\/project\/checkout\/.*/.test(currentRoute) || /^\/checkout\/.*/.test(currentRoute)) {
+    if (headerLogoOnlyRoutes.includes(currentRoute) || /^\/reset-password\/.*/.test(currentRoute)
+        || /^\/project\/checkout\/.*/.test(currentRoute) || /^\/checkout\/.*/.test(currentRoute)
+        || /^\/payment\/success\/.*/.test(currentRoute)
+    ) {
         return (
             <div className='header-container-logo-only' onClick={() => navigate("/")}>
                 <Image className='header-logo-only' src={logo} />

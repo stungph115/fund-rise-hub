@@ -9,6 +9,7 @@ import { faCheckCircle, faSpinner, faTrash } from '@fortawesome/free-solid-svg-i
 import { getIconByBrand } from '../../utils/utils'
 import { Fade } from 'react-reveal'
 import SpinnerGreen from '../../utils/Spinner'
+import { toast } from 'react-toastify'
 
 function ListCard({ client, selectedCard, setSelectedCard }) {
     const stripe = useStripe()
@@ -99,6 +100,8 @@ function ListCard({ client, selectedCard, setSelectedCard }) {
                 id: client.id,
                 paymentMethod: newPaymentMethod.paymentMethod.id
             }
+            const toastId = toast.loading("Création de carte de paiement...")
+
             await axios.post(env.URL + 'card-payment/attach', params).then((res) => {
                 /* console.log("res axios attach payment: ", res) */
                 if (res.data.statusCode === 200) {
@@ -109,6 +112,8 @@ function ListCard({ client, selectedCard, setSelectedCard }) {
                     getPaymentMethods(client)
                     setIsLoading(false)
                     setSelectedCard(newPaymentMethod.id)
+                    toast.update(toastId, { render: 'Méthode de paiement ajoutée', type: "success", isLoading: false, autoClose: 5000 })
+
                 }
             }).catch((err) => {
                 console.log("error axios attach payment: ", err)
@@ -129,7 +134,10 @@ function ListCard({ client, selectedCard, setSelectedCard }) {
                         setError(err.response.data.message)
                         setIsLoading(false)
                     }
+
                 }
+                toast.update(toastId, { render: error, type: "error", isLoading: false, autoClose: 5000 })
+
                 stop = true
             })
         } catch (err) {

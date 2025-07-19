@@ -11,6 +11,7 @@ import { useStripe } from '@stripe/react-stripe-js'
 import { Fade } from "react-reveal"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSpinner } from "@fortawesome/free-solid-svg-icons"
+import SpinnerGreen from "../../utils/Spinner"
 
 function Checkout() {
     const stripe = useStripe()
@@ -62,17 +63,17 @@ function Checkout() {
             montant: amout * 100
         }
         if (paymentIntent) {
-            setLoadingStatus("Verifying payment method...")
+            setLoadingStatus("Vérification de méthode de paiement...")
             confirmPayment(paymentIntent, selectedCard.id)
         } else {
-            setLoadingStatus("Creating payment...")
+            setLoadingStatus("Création du paiement...")
             //create payment
             await axios.post(env.URL + 'payment', {
                 paymentItentData
             }).then(async (res) => {
                 /* console.log('create payment intent res: ', res) */
                 setPaymentIntent(res.data.paymentData)
-                setLoadingStatus("Verifying payment method...")
+                setLoadingStatus("Vérification de méthode de paiement...")
                 //confirm payment
                 confirmPayment(res.data.paymentData, selectedCard.id)
             }).catch((error) => {
@@ -98,7 +99,7 @@ function Checkout() {
                         if (reward) {
                             createRewardEarned()
                         }
-                        navigate("/payment/success")
+                        navigate("/payment/success/" + idProject)
                     }
                 }
                 if (res.error) {
@@ -148,7 +149,7 @@ function Checkout() {
                     (<div style={{ padding: 20 }}>
 
                         {loadingStatus && <div style={{ color: 'blue', marginBottom: 20 }}>{loadingStatus}</div>}
-                        <div><FontAwesomeIcon icon={faSpinner} size='2xl' spin /></div>
+                        <SpinnerGreen />
                     </div>)
                     :
                     <div className="checkout-wrapper">
@@ -197,8 +198,11 @@ function Checkout() {
                             <div>
                                 <ListCard client={currentUser} selectedCard={selectedCard} setSelectedCard={setSelectedCard} />
                             </div>
+
                             {selectedCard &&
                                 <>
+                                    {error && <div style={{ color: 'red', marginBlock: 10 }}>{error}</div>}
+
                                     <div className="project-page-num-button-invest" style={{ marginTop: 50 }} onClick={createPayment}>Je m'engage</div>
                                     <p style={{ width: 500 }}>En validant votre engagement, vous acceptez les Conditions d'utilisation et la Politique de confidentialité de FundRiseHub et vous autorisez Stripe, notre prestataire de traitement des règlements, à débiter votre moyen de paiement.</p>
 
@@ -207,7 +211,6 @@ function Checkout() {
                         </div>
                     </div >
                 }
-                {error && <div style={{ color: 'red', marginBlock: 10 }}>{error}</div>}
                 {succeeded && <div style={{ color: 'green', marginBlock: 10 }}>{succeeded}</div>}
             </>
 
